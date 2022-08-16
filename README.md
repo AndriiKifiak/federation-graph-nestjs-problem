@@ -7,11 +7,11 @@ A simple example of GraphQL Federation using Code First approach.
 Make sure to start the two sub-graph applications first, then the gatway. Otherwise the gateway won't be able to fetch schemas from the sub-graphs.
 
 ```sh
-cd users-application && npm run start
+cd users-application 
 ```
 
 ```sh
-cd posts-application && npm run start
+cd posts-application 
 ```
 
 ```sh
