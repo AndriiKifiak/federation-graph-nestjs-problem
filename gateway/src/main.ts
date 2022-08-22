@@ -1,31 +1,26 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { spawn, Thread, Worker } from "threads";
-import { SchemaGeneratorWorker } from './generatorWorker';
+import { Worker } from "threads";
 
 async function bootstrap() {
-
-  const result = await Promise.all([
+  // We are launching here subgraphs
+  await Promise.all([
     {
-      path: '../../posts-application/src/posts/posts.module.ts',
-      name: 'posts-application'
-    },  
-    {
-      path: '../../users-application/src/users/users.module.ts',  
+      path: '../users-application/dist/app.module.js',  
       name: 'users-application'
+    },
+    {
+      path: '../posts-application/dist/app.module.js',
+      name: 'posts-application'
     }
   ].map(async (item) => {
-    const schemaGenerator = await spawn<SchemaGeneratorWorker>(
-      new Worker("../src/generatorWorker.ts"),
-      { timeout: 30000 }
-    );
-    Thread.events(schemaGenerator).subscribe((event) =>
-      console.log("Schema generator thread event:", event)
-    );
-    await schemaGenerator.generate(item.name, item.path);
+    await new Worker("./generatorWorker", { 
+      workerData: { path: item.path },
+    });
   }))
   
-  const app = await NestFactory.create(AppModule);
-  await app.listen(3002);
+  // When subgraphs launched successfully we are launching our gateway
+  // const app = await NestFactory.create(AppModule);
+  // await app.listen(3002);
 }
 bootstrap();
