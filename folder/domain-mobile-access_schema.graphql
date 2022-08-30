@@ -1,0 +1,579 @@
+"""
+A user's credentials in the mobile access system.
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type MobileAccessCredentials {
+  """
+  Credential uuid
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  credentialId: ID
+
+  """
+  Device ID associated with the credential
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  deviceId: ID
+
+  """
+  Status of the credential
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  credentialStatus: MobileAccessCredentialStatus
+
+  """
+  Card number associated with the credential
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  credentialCardNumber: String
+}
+
+"""Status of mobile access credentials"""
+enum MobileAccessCredentialStatus {
+  UNBOUNDED
+  ISSUE_INITIATED
+  ISSUING
+  ISSUING_FAILURE
+  ISSUED
+  REVOKE_INITIATED
+  REVOKING
+  REVOKING_FAILURE
+  REVOKED
+}
+
+"""
+The result of the GetStatus mobile access query.
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type MobileAccessGetStatusResult {
+  """
+  Status of user
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  userStatus: MobileAccessUserStatus
+
+  """
+  Status of user's invitation
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  invitationStatus: MobileAccessInvitationStatus
+
+  """
+  Credentials of user
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  credentials: [MobileAccessCredentials!]
+}
+
+"""Status of a user in mobile access"""
+enum MobileAccessUserStatus {
+  ACTIVE
+  INACTIVE_INITIATED
+}
+
+"""Status of an invitation in mobile access"""
+enum MobileAccessInvitationStatus {
+  PENDING
+  FAILED
+  ACKNOWLEDGED
+  EXPIRED
+  CANCELLED
+  NOT_SUPPORTED
+  CANCEL_FAILED
+}
+
+"""
+The data from the result of a mobile access register user mutation
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type MobileAccessRegisterUserData {
+  """
+  The invitation code for the user
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  invitationCode: String
+
+  """
+  The status of the user's invitation
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  invitationStatus: MobileAccessInvitationStatus
+
+  """
+  The card number for the user's credentials
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  credentialCardNumber: Float
+
+  """
+  The status of the user's credentials
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  credentialStatus: MobileAccessCredentialStatus
+}
+
+"""
+The result wrapper for registering a user in the mobile access domain
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type MobileAccessRegisterUserResult {
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  isSuccess: Boolean!
+
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errors: [MutationError!]
+
+  """
+  The result of the mobile access user registration
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  result: MobileAccessRegisterUserData
+}
+
+"""
+Represents an error that may have occurred during this mutation
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type MutationError {
+  """
+  The error message
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  message: String!
+
+  """
+  The error code representing this error
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  code: String
+
+  """
+  Represents which system this error originated from
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  service: String
+
+  """
+  Shows more details of the error, such as what field is at error state and what is the issue
+  GraphMeta: {
+   "release": "1.6.0"
+  }
+  """
+  details: String
+}
+
+"""
+Represents the result of the Mobile Access Device Removal mutation
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+type MobileAccessRemoveDeviceResult implements MutationResult {
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  isSuccess: Boolean!
+
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errors: [MutationError!]
+}
+
+"""Represents the result of a mutation"""
+interface MutationResult {
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  isSuccess: Boolean!
+
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errors: [MutationError!]
+}
+
+"""
+Represents the result of the Mobile Access User Removal mutation
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type MobileAccessRemoveUserResult implements MutationResult {
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  isSuccess: Boolean!
+
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errors: [MutationError!]
+}
+
+"""
+The data from the result of a mobile access IssueKeycard mutation
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+type MobileAccessIssueKeycardData {
+  """
+  The invitation code for the user
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  invitationCode: String
+
+  """
+  The status of the user's invitation
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  invitationStatus: MobileAccessInvitationStatus
+
+  """
+  The card number for the user's credentials
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  credentialCardNumber: Float
+
+  """
+  The status of the user's credentials
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  credentialStatus: MobileAccessCredentialStatus
+}
+
+"""
+The result of the Issue Keycard mobile access mutation.
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+type MobileAccessIssueKeycardResult {
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  isSuccess: Boolean!
+
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errors: [MutationError!]
+
+  """
+  The result of the mobile access issue keycard operation
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  result: MobileAccessIssueKeycardData
+}
+
+"""
+Represents the result of the Mobile Access Keycard Removal mutation
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+type MobileAccessRemoveKeycardResult implements MutationResult {
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  isSuccess: Boolean!
+
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errors: [MutationError!]
+}
+
+type Query {
+  """
+  Get status of mobile access request for user
+  GraphMeta: {
+   "release": "1.0.0",
+   "acceptedTokenTypes": "member"
+  }
+  """
+  getMobileAccessStatus(
+    """User/account id whose status will be checked"""
+    input: MobileAccessGetStatusInput!
+  ): MobileAccessGetStatusResult!
+}
+
+"""
+User input for the GetStatus mobile access query.
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+input MobileAccessGetStatusInput {
+  """
+  UUID of the user
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  userId: ID
+
+  """
+  UUID of the account/company the user belongs to
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  accountId: ID
+}
+
+type Mutation {
+  """
+  Register user in mobile access domain
+  GraphMeta: {
+   "release": "1.0.0",
+   "acceptedTokenTypes": "member"
+  }
+  """
+  doRegisterMobileAccessUser(
+    """User to register into mobile access system"""
+    input: MobileAccessRegisterUserInput!
+  ): MobileAccessRegisterUserResult!
+
+  """
+  Remove user in mobile access domain
+  GraphMeta: {
+   "release": "1.0.0",
+   "acceptedTokenTypes": "member"
+  }
+  """
+  doRemoveMobileAccessUser(
+    """User id to remove from mobile access system"""
+    input: String!
+  ): MobileAccessRemoveUserResult!
+
+  """
+  Remove device in mobile access domain
+  GraphMeta: {
+   "release": "1.1.0",
+   "acceptedTokenTypes": "member"
+  }
+  """
+  doRemoveMobileAccessDevice(
+    """Device id to remove from mobile access system"""
+    input: String!
+  ): MobileAccessRemoveDeviceResult!
+
+  """
+  Issue keycard to user in mobile access domain
+  GraphMeta: {
+   "release": "1.1.0",
+   "acceptedTokenTypes": "member"
+  }
+  """
+  doIssueMobileAccessKeycard(
+    """User info for issuing keycard"""
+    input: MobileAccessIssueKeycardInput!
+  ): MobileAccessIssueKeycardResult!
+
+  """
+  Remove keycard in mobile access domain
+  GraphMeta: {
+   "release": "1.1.0",
+   "acceptedTokenTypes": "member"
+  }
+  """
+  doRemoveMobileAccessKeycard(
+    """User or keycard info to remove"""
+    input: MobileAccessRemoveKeycardInput!
+  ): MobileAccessRemoveKeycardResult!
+}
+
+"""
+User input for the RegisterUser mobile access mutation.
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+input MobileAccessRegisterUserInput {
+  """
+  UUID of the user
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  userId: ID!
+
+  """
+  UUID of the account/company the user belongs to
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  accountId: ID!
+
+  """
+  One Time Pin (OTP) for validating the user's member token with two-factor authentication (2FA)
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  otp: ID
+
+  """
+  Indicates whether or not this is an Apple Wallet user, defaulted to false
+  GraphMeta: {
+   "release": "1.6.2"
+  }
+  """
+  isWalletPass: Boolean = false
+
+  """
+  UUID of the account/company the user belongs to
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  clientType: MobileAccessClientType!
+}
+
+"""Client type in mobile access"""
+enum MobileAccessClientType {
+  ON_DEMAND
+  COWORKING
+  ENTERPRISE
+}
+
+"""
+User input for the IssueKeycard mobile access mutation.
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+input MobileAccessIssueKeycardInput {
+  """
+  UUID of the user
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  userId: ID!
+
+  """
+  UUID of the device to bind the keycard to
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  deviceId: ID
+}
+
+"""
+User input for the RemoveKeycard mobile access mutation.
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+input MobileAccessRemoveKeycardInput {
+  """
+  UUID of the user
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  userId: ID
+
+  """
+  UUID of the keycard
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  cardId: ID
+}
