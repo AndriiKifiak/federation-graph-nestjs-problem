@@ -1,3 +1,132 @@
+type Mutation {
+  """
+  Reset the WiFi credentials associated with the user's token
+  GraphMeta: {
+   "release": "1.6.0",
+   "acceptedTokenTypes": [
+    "member"
+   ]
+  }
+  """
+  doResetUserWiFiCredentials: ResetUserWiFiCredentialsResult!
+}
+
+"""
+Represents an error that may have occurred during this mutation
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type MutationError {
+  """
+  The error message
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  message: String!
+
+  """
+  The error code representing this error
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  code: String
+
+  """
+  Represents which system this error originated from
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  service: String
+
+  """
+  Shows more details of the error, such as what field is at error state and what is the issue
+  GraphMeta: {
+   "release": "1.6.0"
+  }
+  """
+  details: String
+}
+
+"""Represents the result of a mutation"""
+interface MutationResult {
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  isSuccess: Boolean!
+
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errors: [MutationError!]
+}
+
+type Query {
+  """
+  Gets the WiFi credentials associated with the user's token
+  GraphMeta: {
+   "release": "1.6.0",
+   "acceptedTokenTypes": [
+    "member"
+   ],
+   "deprecatedBy": "getUserWiFiCredentials"
+  }
+  """
+  getUserCredentials: UserCredentials! @deprecated(reason: "use getUserWiFiCredentials")
+
+  """
+  Gets the WiFi credentials associated with the user's token
+  GraphMeta: {
+   "release": "1.6.0",
+   "acceptedTokenTypes": [
+    "member"
+   ]
+  }
+  """
+  getUserWiFiCredentials: UserCredentials!
+}
+
+"""
+Reset User WiFi credentials result
+GraphMeta: {
+ "release": "1.6.1"
+}
+"""
+type ResetUserWiFiCredentialsResult implements MutationResult {
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  isSuccess: Boolean!
+
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errors: [MutationError!]
+
+  """
+  The user credentials
+  GraphMeta: {
+   "release": "1.6.1"
+  }
+  """
+  result: UserCredentials
+}
+
 """
 Represents a user credentials
 GraphMeta: {
@@ -44,133 +173,4 @@ type UserCredentials {
   }
   """
   deviceNetworkName: String!
-}
-
-"""
-Reset User WiFi credentials result
-GraphMeta: {
- "release": "1.6.1"
-}
-"""
-type ResetUserWiFiCredentialsResult implements MutationResult {
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  isSuccess: Boolean!
-
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  errors: [MutationError!]
-
-  """
-  The user credentials
-  GraphMeta: {
-   "release": "1.6.1"
-  }
-  """
-  result: UserCredentials
-}
-
-"""Represents the result of a mutation"""
-interface MutationResult {
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  isSuccess: Boolean!
-
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  errors: [MutationError!]
-}
-
-"""
-Represents an error that may have occurred during this mutation
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-type MutationError {
-  """
-  The error message
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  message: String!
-
-  """
-  The error code representing this error
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  code: String
-
-  """
-  Represents which system this error originated from
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  service: String
-
-  """
-  Shows more details of the error, such as what field is at error state and what is the issue
-  GraphMeta: {
-   "release": "1.6.0"
-  }
-  """
-  details: String
-}
-
-type Query {
-  """
-  Gets the WiFi credentials associated with the user's token
-  GraphMeta: {
-   "release": "1.6.0",
-   "acceptedTokenTypes": [
-    "member"
-   ],
-   "deprecatedBy": "getUserWiFiCredentials"
-  }
-  """
-  getUserCredentials: UserCredentials! @deprecated(reason: "use getUserWiFiCredentials")
-
-  """
-  Gets the WiFi credentials associated with the user's token
-  GraphMeta: {
-   "release": "1.6.0",
-   "acceptedTokenTypes": [
-    "member"
-   ]
-  }
-  """
-  getUserWiFiCredentials: UserCredentials!
-}
-
-type Mutation {
-  """
-  Reset the WiFi credentials associated with the user's token
-  GraphMeta: {
-   "release": "1.6.0",
-   "acceptedTokenTypes": [
-    "member"
-   ]
-  }
-  """
-  doResetUserWiFiCredentials: ResetUserWiFiCredentialsResult!
 }

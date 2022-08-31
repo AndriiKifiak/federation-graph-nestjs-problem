@@ -1,17 +1,199 @@
 """
-Redacted user information
+Represents the user's account
+GraphMeta: {
+ "release": "1.6.0"
+}
+"""
+type Account {
+  """
+  Account ID
+  GraphMeta: {
+   "release": "1.6.0"
+  }
+  """
+  id: ID!
+
+  """
+  Account name
+  GraphMeta: {
+   "release": "1.6.0"
+  }
+  """
+  name: String!
+
+  """
+  Account memberships
+  GraphMeta: {
+   "release": "1.6.0"
+  }
+  """
+  memberships: [UserMembership!]!
+}
+
+"""
+DoFindOrCreateUserInput
 GraphMeta: {
  "release": "1.8.0"
 }
 """
-type UserRedacted {
+input DoFindOrCreateUserInput {
   """
-  User ID
+  Email
   GraphMeta: {
    "release": "1.8.0"
   }
   """
-  id: ID!
+  email: String!
+
+  """
+  Name
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  name: String!
+
+  """
+  Phone
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  phone: String
+}
+
+"""
+The result of the doFindOrCreateUser mutation
+GraphMeta: {
+ "release": "1.8.0"
+}
+"""
+type DoFindOrCreateUserResult {
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  isSuccess: Boolean!
+
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errors: [MutationError!]
+
+  """
+  The result of the doFindOrCreateUser mutation
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  result: UserRedacted
+}
+
+"""
+WeWork Location basic attributes
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type Location @key(fields: "id") @extends {
+  """
+  Location UUID
+  GraphMeta: {
+   "release": "1.6.0"
+  }
+  """
+  id: ID! @external
+}
+
+type Mutation {
+  """
+  Finds the user by email address if one exists, or creates a new user if one does not exist
+  GraphMeta: {
+   "release": "1.8.0",
+   "acceptedTokenTypes": [
+    "service"
+   ]
+  }
+  """
+  doFindOrCreateUser(
+    """Information by which to find or create the user."""
+    input: DoFindOrCreateUserInput!
+  ): DoFindOrCreateUserResult!
+}
+
+"""
+Represents an error that may have occurred during this mutation
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type MutationError {
+  """
+  The error message
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  message: String!
+
+  """
+  The error code representing this error
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  code: String
+
+  """
+  Represents which system this error originated from
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  service: String
+
+  """
+  Shows more details of the error, such as what field is at error state and what is the issue
+  GraphMeta: {
+   "release": "1.6.0"
+  }
+  """
+  details: String
+}
+
+type Query {
+  """
+  This gets user by their user id
+  GraphMeta: {
+   "release": "1.0.0",
+   "acceptedTokenTypes": [
+    "member"
+   ]
+  }
+  """
+  getUser(
+    """User ID"""
+    id: ID!
+  ): User!
+
+  """
+  Returns the memberships associated with the user's token
+  GraphMeta: {
+   "release": "1.5.0",
+   "acceptedTokenTypes": "member"
+  }
+  """
+  getUserMemberships(
+    """
+    Active flag to indicate whether to return all memberships or only active ones
+    """
+    active: Boolean = true
+  ): [UserMembership!]!
 }
 
 """
@@ -20,7 +202,7 @@ GraphMeta: {
  "release": "1.0.0"
 }
 """
-type User {
+type User @key(fields: "id") {
   """
   User ID
   GraphMeta: {
@@ -82,78 +264,6 @@ type User {
 }
 
 """
-The result of the doFindOrCreateUser mutation
-GraphMeta: {
- "release": "1.8.0"
-}
-"""
-type DoFindOrCreateUserResult {
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  isSuccess: Boolean!
-
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  errors: [MutationError!]
-
-  """
-  The result of the doFindOrCreateUser mutation
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  result: UserRedacted
-}
-
-"""
-Represents an error that may have occurred during this mutation
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-type MutationError {
-  """
-  The error message
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  message: String!
-
-  """
-  The error code representing this error
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  code: String
-
-  """
-  Represents which system this error originated from
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  service: String
-
-  """
-  Shows more details of the error, such as what field is at error state and what is the issue
-  GraphMeta: {
-   "release": "1.6.0"
-  }
-  """
-  details: String
-}
-
-"""
 Represents the WeWork membership for the user
 GraphMeta: {
  "release": "1.5.0"
@@ -210,127 +320,17 @@ type UserMembership {
 }
 
 """
-Represents the user's account
-GraphMeta: {
- "release": "1.6.0"
-}
-"""
-type Account {
-  """
-  Account ID
-  GraphMeta: {
-   "release": "1.6.0"
-  }
-  """
-  id: ID!
-
-  """
-  Account name
-  GraphMeta: {
-   "release": "1.6.0"
-  }
-  """
-  name: String!
-
-  """
-  Account memberships
-  GraphMeta: {
-   "release": "1.6.0"
-  }
-  """
-  memberships: [UserMembership!]!
-}
-
-"""
-WeWork Location basic attributes
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-type Location {
-  """
-  Location UUID
-  GraphMeta: {
-   "release": "1.6.0"
-  }
-  """
-  id: ID!
-}
-
-type Query {
-  """
-  This gets user by their user id
-  GraphMeta: {
-   "release": "1.0.0",
-   "acceptedTokenTypes": [
-    "member"
-   ]
-  }
-  """
-  getUser(
-    """User ID"""
-    id: ID!
-  ): User!
-
-  """
-  Returns the memberships associated with the user's token
-  GraphMeta: {
-   "release": "1.5.0",
-   "acceptedTokenTypes": "member"
-  }
-  """
-  getUserMemberships(
-    """
-    Active flag to indicate whether to return all memberships or only active ones
-    """
-    active: Boolean = true
-  ): [UserMembership!]!
-}
-
-type Mutation {
-  """
-  Finds the user by email address if one exists, or creates a new user if one does not exist
-  GraphMeta: {
-   "release": "1.8.0",
-   "acceptedTokenTypes": [
-    "service"
-   ]
-  }
-  """
-  doFindOrCreateUser(
-    """Information by which to find or create the user."""
-    input: DoFindOrCreateUserInput!
-  ): DoFindOrCreateUserResult!
-}
-
-"""
-DoFindOrCreateUserInput
+Redacted user information
 GraphMeta: {
  "release": "1.8.0"
 }
 """
-input DoFindOrCreateUserInput {
+type UserRedacted @key(fields: "id") {
   """
-  Email
+  User ID
   GraphMeta: {
    "release": "1.8.0"
   }
   """
-  email: String!
-
-  """
-  Name
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  name: String!
-
-  """
-  Phone
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  phone: String
+  id: ID!
 }
