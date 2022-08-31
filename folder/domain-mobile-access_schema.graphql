@@ -285,6 +285,14 @@ input MobileAccessRegisterUserInput {
   accountId: ID!
 
   """
+  One Time Pin (OTP) for validating the user's member token with two-factor authentication (2FA)
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  otp: ID
+
+  """
   Indicates whether or not this is an Apple Wallet user, defaulted to false
   GraphMeta: {
    "release": "1.6.2"
