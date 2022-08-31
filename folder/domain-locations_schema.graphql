@@ -1,138 +1,12 @@
-"""Location access types"""
-enum AccessType {
-  PUBLIC
-  PRIVATE
-}
-
-"""Location address types"""
-enum AddressTypeEnum {
-  UNKNOWN
-  STANDARDIZED
-  MARKETING
-  ENTRANCE
-}
-
 """
-A city result from locations search
-GraphMeta: {
- "release": "1.1.0"
-}
-"""
-type City {
-  """
-  The name of the city
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  name: String!
-
-  """
-  The name of the market the city is in
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  marketName: String
-
-  """
-  The name of the country the city is in
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  countryName: String
-
-  """
-  A location near or in the city
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  nearbyLocation: Location
-
-  """
-  The number of locations near or in the city
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  nearbyLocationsCount: Float
-}
-
-"""
-Input for GetLocationsByAmenities query. Includes pagination info and amenity IDs
-GraphMeta: {
- "release": "1.4.0"
-}
-"""
-input GetLocationsByAmenitiesInput {
-  """
-  Pagination information for query. Will default to first page. Offset will not be accepted without limit, and should be a multiple of the limit.Limit maximum should not exceed 100
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  pagination: PaginationInput
-
-  """
-  Amenity IDs to look up locations by. Lookup will use AND syntax for amenities
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  amenityIds: [String!]!
-}
-
-"""
-Filters for GetLocations query.
+Common pagination result type
 GraphMeta: {
  "release": "1.8.0"
 }
 """
-input GetLocationsFilterInput {
+type PaginationResult {
   """
-  List of location IDs to filter by
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  ids: [String!]
-}
-
-"""
-Input for GetLocations query. Includes pagination info and ID filters
-GraphMeta: {
- "release": "1.8.0"
-}
-"""
-input GetLocationsInput {
-  """
-  Pagination information for query. Will default to first page. Offset will not be accepted without limit, and should be a multiple of the limit.
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  pagination: GetLocationsPaginationInput
-
-  """
-  Filter to appply to locations.
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  filter: GetLocationsFilterInput
-}
-
-"""
-GetLocations pagination input type
-GraphMeta: {
- "release": "1.8.0"
-}
-"""
-input GetLocationsPaginationInput {
-  """
-  Number of elements to skip over when determining the start of a page.If not provided, defaults to 0.
+  Number of pages skipped
   GraphMeta: {
    "release": "1.8.0"
   }
@@ -140,36 +14,214 @@ input GetLocationsPaginationInput {
   offset: Int
 
   """
-  Number of elements in a page, if not provided, defaults to 10 and should not be greater than 50.
+  Maximum number of elements in the page result
   GraphMeta: {
    "release": "1.8.0"
   }
   """
   limit: Int
+
+  """
+  Total number of elements in the page result
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  total: Int
 }
 
 """
-GetLocationsResponse
+An amenity, or feature, at a location
+GraphMeta: {
+ "release": "1.4.0"
+}
+"""
+type LocationAmenity {
+  """
+  Amenity id
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  id: ID!
+
+  """
+  Amenity name
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  name: String!
+
+  """
+  Amenity type
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  type: String!
+}
+
+"""
+The hours a physical location is open for business
+GraphMeta: {
+ "release": "1.4.0"
+}
+"""
+type LocationHours {
+  """
+  Location hours type
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  type: LocationHoursType!
+
+  """
+  Day of the week the listed times apply to
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  day: LocationHoursDay!
+
+  """
+  Opening time of the day, ex: 08:30
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  openTime: String
+
+  """
+  Closing time of the day, ex: 17:30
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  closeTime: String
+
+  """
+  The hour the location opens
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  openHour: Float @deprecated(reason: "Replaced with openTime field")
+
+  """
+  The minutes the location opens
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  openMinutes: Float @deprecated(reason: "Replaced with openTime field")
+
+  """
+  The hour the location closes
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  closeHour: Float @deprecated(reason: "Replaced with closeTime field")
+
+  """
+  The minutes the location closes
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  closeMinutes: Float @deprecated(reason: "Replaced with closeTime field")
+}
+
+"""Type of hours a location can list for opening/closing times"""
+enum LocationHoursType {
+  UNKNOWN_HOURS
+  OPERATING_HOURS
+}
+
+"""Day of the week for a particular set of opening/closing times"""
+enum LocationHoursDay {
+  DAY_OF_WEEK_UNSPECIFIED
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+"""
+Image of an location
 GraphMeta: {
  "release": "1.8.0"
 }
 """
-type GetLocationsResponse {
+type LocationImage {
   """
-  List of locations
+  URL of an image
   GraphMeta: {
    "release": "1.8.0"
   }
   """
-  locations: [Location!]!
+  url: String!
+}
+
+"""
+Floors that are available at a location
+GraphMeta: {
+ "release": "1.8.0"
+}
+"""
+type LocationFloor {
+  """
+  Floor ID
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  id: ID!
 
   """
-  Pagination result
+  Name of the floor
   GraphMeta: {
    "release": "1.8.0"
   }
   """
-  pagination: PaginationResult!
+  name: String
+
+  """
+  Level of the floor
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  level: Float
+}
+
+"""
+Entrace instructions for a location
+GraphMeta: {
+ "release": "1.8.0"
+}
+"""
+type LocationEntranceInstruction {
+  """
+  Text content of the entrance instruction
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  text: String!
+
+  """
+  Locale of the instruction, ex: en-US
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  locale: String!
 }
 
 """
@@ -178,7 +230,7 @@ GraphMeta: {
  "release": "1.0.0"
 }
 """
-type Location @key(fields: "id") {
+type Location {
   """
   Location ID
   GraphMeta: {
@@ -302,6 +354,30 @@ type Location @key(fields: "id") {
 }
 
 """
+GetLocationsResponse
+GraphMeta: {
+ "release": "1.8.0"
+}
+"""
+type GetLocationsResponse {
+  """
+  List of locations
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  locations: [Location!]!
+
+  """
+  Pagination result
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  pagination: PaginationResult!
+}
+
+"""
 A physical location's address
 GraphMeta: {
  "release": "1.0.0"
@@ -381,254 +457,60 @@ type LocationAddress {
   longitude: Float
 }
 
+"""Location address types"""
+enum AddressTypeEnum {
+  UNKNOWN
+  STANDARDIZED
+  MARKETING
+  ENTRANCE
+}
+
 """
-An amenity, or feature, at a location
+A city result from locations search
 GraphMeta: {
- "release": "1.4.0"
+ "release": "1.1.0"
 }
 """
-type LocationAmenity {
+type City {
   """
-  Amenity id
+  The name of the city
   GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  id: ID!
-
-  """
-  Amenity name
-  GraphMeta: {
-   "release": "1.4.0"
+   "release": "1.1.0"
   }
   """
   name: String!
 
   """
-  Amenity type
+  The name of the market the city is in
   GraphMeta: {
-   "release": "1.4.0"
+   "release": "1.1.0"
   }
   """
-  type: String!
-}
+  marketName: String
 
-"""
-Entrace instructions for a location
-GraphMeta: {
- "release": "1.8.0"
-}
-"""
-type LocationEntranceInstruction {
   """
-  Text content of the entrance instruction
+  The name of the country the city is in
   GraphMeta: {
-   "release": "1.8.0"
+   "release": "1.1.0"
   }
   """
-  text: String!
+  countryName: String
 
   """
-  Locale of the instruction, ex: en-US
+  A location near or in the city
   GraphMeta: {
-   "release": "1.8.0"
+   "release": "1.1.0"
   }
   """
-  locale: String!
-}
+  nearbyLocation: Location
 
-"""
-Floors that are available at a location
-GraphMeta: {
- "release": "1.8.0"
-}
-"""
-type LocationFloor {
   """
-  Floor ID
+  The number of locations near or in the city
   GraphMeta: {
-   "release": "1.8.0"
+   "release": "1.1.0"
   }
   """
-  id: ID!
-
-  """
-  Name of the floor
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  name: String
-
-  """
-  Level of the floor
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  level: Float
-}
-
-"""
-The hours a physical location is open for business
-GraphMeta: {
- "release": "1.4.0"
-}
-"""
-type LocationHours {
-  """
-  Location hours type
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  type: LocationHoursType!
-
-  """
-  Day of the week the listed times apply to
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  day: LocationHoursDay!
-
-  """
-  Opening time of the day, ex: 08:30
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  openTime: String
-
-  """
-  Closing time of the day, ex: 17:30
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  closeTime: String
-
-  """
-  The hour the location opens
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  openHour: Float @deprecated(reason: "Replaced with openTime field")
-
-  """
-  The minutes the location opens
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  openMinutes: Float @deprecated(reason: "Replaced with openTime field")
-
-  """
-  The hour the location closes
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  closeHour: Float @deprecated(reason: "Replaced with closeTime field")
-
-  """
-  The minutes the location closes
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  closeMinutes: Float @deprecated(reason: "Replaced with closeTime field")
-}
-
-"""Day of the week for a particular set of opening/closing times"""
-enum LocationHoursDay {
-  DAY_OF_WEEK_UNSPECIFIED
-  MONDAY
-  TUESDAY
-  WEDNESDAY
-  THURSDAY
-  FRIDAY
-  SATURDAY
-  SUNDAY
-}
-
-"""Type of hours a location can list for opening/closing times"""
-enum LocationHoursType {
-  UNKNOWN_HOURS
-  OPERATING_HOURS
-}
-
-"""
-Image of an location
-GraphMeta: {
- "release": "1.8.0"
-}
-"""
-type LocationImage {
-  """
-  URL of an image
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  url: String!
-}
-
-"""
-Common pagination input type
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-input PaginationInput {
-  """
-  Number of elements to skip over when determining the start of a page.
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  offset: Int
-
-  """
-  Number of elements in a page
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  limit: Int
-}
-
-"""
-Common pagination result type
-GraphMeta: {
- "release": "1.8.0"
-}
-"""
-type PaginationResult {
-  """
-  Number of pages skipped
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  offset: Int
-
-  """
-  Maximum number of elements in the page result
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  limit: Int
-
-  """
-  Total number of elements in the page result
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  total: Int
+  nearbyLocationsCount: Float
 }
 
 type Query {
@@ -734,59 +616,51 @@ type Query {
 }
 
 """
-Input for the SearchCities query.
+Input for SearchLocations query. Includes pagination and filter information.
 GraphMeta: {
  "release": "1.0.0"
 }
 """
-input SearchCitiesInput {
+input SearchLocationsInput {
   """
-  Latitude of the user's device. If included, must also include deviceLongitude.
+  Pagination information for query. Will default to first page. Offset will not be accepted without limit, and should be a multiple of the limit.Limit maximum should not exceed 50.
   GraphMeta: {
    "release": "1.0.0"
   }
   """
-  deviceLatitude: Float
+  pagination: PaginationInput
 
   """
-  Longitude of the user's device. If included, must also include deviceLatitude.
+  Filter to apply to locations search.
   GraphMeta: {
    "release": "1.0.0"
   }
   """
-  deviceLongitude: Float
-
-  """
-  Whether or not the returned cities have OnDemand locations in them.
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  onDemand: Boolean
+  filter: SearchLocationsFilterInput
 }
 
 """
-Corner coordinate definitions of a locations search box
+Common pagination input type
 GraphMeta: {
- "release": "1.1.0"
+ "release": "1.0.0"
 }
 """
-input SearchLocationsFilterBoundingBox {
+input PaginationInput {
   """
-  The northwest (NW) corner of the bounding box.
+  Number of elements to skip over when determining the start of a page.
   GraphMeta: {
-   "release": "1.1.0"
+   "release": "1.0.0"
   }
   """
-  northWest: String!
+  offset: Int
 
   """
-  The southeast (SE) corner of the bounding box.
+  Number of elements in a page
   GraphMeta: {
-   "release": "1.1.0"
+   "release": "1.0.0"
   }
   """
-  southEast: String!
+  limit: Int
 }
 
 """
@@ -894,25 +768,151 @@ input SearchLocationsFilterInput {
 }
 
 """
-Input for SearchLocations query. Includes pagination and filter information.
+Corner coordinate definitions of a locations search box
 GraphMeta: {
- "release": "1.0.0"
+ "release": "1.1.0"
 }
 """
-input SearchLocationsInput {
+input SearchLocationsFilterBoundingBox {
   """
-  Pagination information for query. Will default to first page. Offset will not be accepted without limit, and should be a multiple of the limit.Limit maximum should not exceed 50.
+  The northwest (NW) corner of the bounding box.
   GraphMeta: {
-   "release": "1.0.0"
+   "release": "1.1.0"
+  }
+  """
+  northWest: String!
+
+  """
+  The southeast (SE) corner of the bounding box.
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  southEast: String!
+}
+
+"""Location access types"""
+enum AccessType {
+  PUBLIC
+  PRIVATE
+}
+
+"""
+Input for GetLocations query. Includes pagination info and ID filters
+GraphMeta: {
+ "release": "1.8.0"
+}
+"""
+input GetLocationsInput {
+  """
+  Pagination information for query. Will default to first page. Offset will not be accepted without limit, and should be a multiple of the limit.
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  pagination: GetLocationsPaginationInput
+
+  """
+  Filter to appply to locations.
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  filter: GetLocationsFilterInput
+}
+
+"""
+GetLocations pagination input type
+GraphMeta: {
+ "release": "1.8.0"
+}
+"""
+input GetLocationsPaginationInput {
+  """
+  Number of elements to skip over when determining the start of a page.If not provided, defaults to 0.
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  offset: Int
+
+  """
+  Number of elements in a page, if not provided, defaults to 10 and should not be greater than 50.
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  limit: Int
+}
+
+"""
+Filters for GetLocations query.
+GraphMeta: {
+ "release": "1.8.0"
+}
+"""
+input GetLocationsFilterInput {
+  """
+  List of location IDs to filter by
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  ids: [String!]
+}
+
+"""
+Input for GetLocationsByAmenities query. Includes pagination info and amenity IDs
+GraphMeta: {
+ "release": "1.4.0"
+}
+"""
+input GetLocationsByAmenitiesInput {
+  """
+  Pagination information for query. Will default to first page. Offset will not be accepted without limit, and should be a multiple of the limit.Limit maximum should not exceed 100
+  GraphMeta: {
+   "release": "1.4.0"
   }
   """
   pagination: PaginationInput
 
   """
-  Filter to apply to locations search.
+  Amenity IDs to look up locations by. Lookup will use AND syntax for amenities
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  amenityIds: [String!]!
+}
+
+"""
+Input for the SearchCities query.
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+input SearchCitiesInput {
+  """
+  Latitude of the user's device. If included, must also include deviceLongitude.
   GraphMeta: {
    "release": "1.0.0"
   }
   """
-  filter: SearchLocationsFilterInput
+  deviceLatitude: Float
+
+  """
+  Longitude of the user's device. If included, must also include deviceLatitude.
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  deviceLongitude: Float
+
+  """
+  Whether or not the returned cities have OnDemand locations in them.
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  onDemand: Boolean
 }

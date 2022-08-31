@@ -1,161 +1,81 @@
 """
-CreateGroupRegistrationInput
+WeWork Location
 GraphMeta: {
- "release": "1.4.0"
+ "release": "1.2.0"
 }
 """
-input CreateGroupRegistrationInput {
+type Location {
   """
-  ID for the location at which a guest is expected
+  Location UUID
   GraphMeta: {
-   "release": "1.4.0"
+   "release": "1.2.0"
   }
   """
-  locationId: ID!
-
-  """
-  Time at which a guest is expected, represented as an RFC 3339 date string (e.g., '2022-06-01T17:00:00+00:00')
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  expectedTime: String!
-
-  """
-  Guest comment associated with new group reservation
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  guestComment: String
-
-  """
-  Internal comments visible to WeWork staff
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  comment: String
-
-  """
-  Determines whether or not to send the guests an email
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  sendGuestEmail: Boolean!
-
-  """
-  ID for the user who has registered a guest
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  hostId: ID!
-
-  """
-  Individual guest registrations in the group
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  registrations: [RegistrationInput!]!
+  id: ID!
 }
 
 """
-GetGroupRegistrationsInput
+Registration object
 GraphMeta: {
- "release": "1.4.0"
+ "release": "1.0.0"
 }
 """
-input GetGroupRegistrationsInput {
+type Registration {
   """
-  ID for the location at which a guest is expected
+  Guest registration ID
   GraphMeta: {
-   "release": "1.4.0"
+   "release": "1.0.0"
   }
   """
-  locationId: ID
+  id: ID!
 
   """
-  ID for the user who has registered a guest
+  Guest's first name
   GraphMeta: {
-   "release": "1.4.0"
+   "release": "1.0.0"
   }
   """
-  hostId: ID
+  firstName: String
 
   """
-  Filters registrations to those where a guest is expected at or after this time, represented as an RFC 3339 date string (e.g., '2022-06-01T17:00:00+00:00')
+  Guest's last name
   GraphMeta: {
-   "release": "1.4.0"
+   "release": "1.0.0"
   }
   """
-  startTime: String
+  lastName: String
 
   """
-  Filters registrations to those where a guest is expected before this time, represented as an RFC 3339 date string (e.g., '2022-06-01T17:00:00+00:00')
+  Guest's email address
   GraphMeta: {
-   "release": "1.4.0"
+   "release": "1.0.0"
   }
   """
-  endTime: String
+  email: String
 
   """
-  Filters registrations to those where a guest is expected between 12:00am and 11:59pm (inclusive) on this date, represented as an RFC 3339 date string (e.g., '2022-06-01')
+  Company that guest is associated with, if applicable
   GraphMeta: {
-   "release": "1.4.0"
+   "release": "1.0.0"
   }
   """
-  date: String
+  company: String
 
   """
-  Offset for pagination, defaulted to 0
+  When the registration was created
   GraphMeta: {
-   "release": "1.4.0"
+   "release": "1.0.0"
   }
   """
-  offset: Int
+  createdTime: String!
 
   """
-  Number of registrations to retrieve per page for pagination, defaulted to 100
+  When this record was last updated, if applicable
   GraphMeta: {
-   "release": "1.4.0"
+   "release": "1.0.0"
   }
   """
-  limit: Int
-}
-
-"""
-GetRecentRegistrationsInput
-GraphMeta: {
- "release": "1.4.0"
-}
-"""
-input GetRecentRegistrationsInput {
-  """
-  Number of days since the registration was updated. If not passed it will search all registrations
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  daysSince: Int
-
-  """
-  When set to true, will return duplicate registrations. If set to false, a distinct list of registrations is returned, filtered by first name, last name and email address
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  showDuplicates: Boolean
-
-  """
-  Set limit on most recent guests returned. If not passed it will return all
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  guestLimit: Int
+  updatedTime: String
 }
 
 """
@@ -319,6 +239,238 @@ type GroupRegistrationMutationResult implements MutationResult {
   result: GroupRegistration
 }
 
+"""Represents the result of a mutation"""
+interface MutationResult {
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  isSuccess: Boolean!
+
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errors: [MutationError!]
+}
+
+"""
+Represents an error that may have occurred during this mutation
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type MutationError {
+  """
+  The error message
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  message: String!
+
+  """
+  The error code representing this error
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  code: String
+
+  """
+  Represents which system this error originated from
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  service: String
+
+  """
+  Shows more details of the error, such as what field is at error state and what is the issue
+  GraphMeta: {
+   "release": "1.6.0"
+  }
+  """
+  details: String
+}
+
+type Query {
+  """
+  Get all registrations belonging to the member
+  GraphMeta: {
+   "release": "1.4.0",
+   "acceptedTokenTypes": "member"
+  }
+  """
+  getGroupRegistrations(
+    """TODO"""
+    input: GetGroupRegistrationsInput!
+  ): [GroupRegistration!]!
+
+  """
+  Get a group registration
+  GraphMeta: {
+   "release": "1.4.0",
+   "acceptedTokenTypes": "member"
+  }
+  """
+  getGroupRegistration(
+    """The ID of the group registration"""
+    id: ID!
+  ): GroupRegistration!
+
+  """
+  Get recent guest registrations
+  GraphMeta: {
+   "release": "1.4.0",
+   "acceptedTokenTypes": "member"
+  }
+  """
+  getRecentRegistrations(
+    """TODO"""
+    input: GetRecentRegistrationsInput!
+  ): [Registration!]!
+
+  """
+  Get all registrations belonging to the user given a location
+  GraphMeta: {
+   "release": "1.0.0",
+   "acceptedTokenTypes": "member",
+   "deprecatedBy": "getGroupRegistrations"
+  }
+  """
+  groupRegistrations(
+    """TODO"""
+    registrationsGetAllInput: ListGuestRegistrationsInput!
+  ): [GroupRegistration!]! @deprecated(reason: "use getGroupRegistrations")
+
+  """
+  Get a group registration
+  GraphMeta: {
+   "release": "1.0.0",
+   "acceptedTokenTypes": "member",
+   "deprecatedBy": "getGroupRegistration"
+  }
+  """
+  groupRegistration(
+    """TODO"""
+    id: ID!
+  ): GroupRegistration! @deprecated(reason: "use getGroupRegistration")
+
+  """
+  get recent guest registrations 
+  GraphMeta: {
+   "release": "1.2.0",
+   "acceptedTokenTypes": "member",
+   "deprecatedBy": "getRecentRegistrations"
+  }
+  """
+  recentRegistrations(
+    """Returns the most recent child registration records for the user."""
+    listRecentRegistrationsInput: ListRecentRegistrationsInput!
+  ): [Registration!]! @deprecated(reason: "use getRecentRegistrations")
+}
+
+"""
+GetGroupRegistrationsInput
+GraphMeta: {
+ "release": "1.4.0"
+}
+"""
+input GetGroupRegistrationsInput {
+  """
+  ID for the location at which a guest is expected
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  locationId: ID
+
+  """
+  ID for the user who has registered a guest
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  hostId: ID
+
+  """
+  Filters registrations to those where a guest is expected at or after this time, represented as an RFC 3339 date string (e.g., '2022-06-01T17:00:00+00:00')
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  startTime: String
+
+  """
+  Filters registrations to those where a guest is expected before this time, represented as an RFC 3339 date string (e.g., '2022-06-01T17:00:00+00:00')
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  endTime: String
+
+  """
+  Filters registrations to those where a guest is expected between 12:00am and 11:59pm (inclusive) on this date, represented as an RFC 3339 date string (e.g., '2022-06-01')
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  date: String
+
+  """
+  Offset for pagination, defaulted to 0
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  offset: Int
+
+  """
+  Number of registrations to retrieve per page for pagination, defaulted to 100
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  limit: Int
+}
+
+"""
+GetRecentRegistrationsInput
+GraphMeta: {
+ "release": "1.4.0"
+}
+"""
+input GetRecentRegistrationsInput {
+  """
+  Number of days since the registration was updated. If not passed it will search all registrations
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  daysSince: Int
+
+  """
+  When set to true, will return duplicate registrations. If set to false, a distinct list of registrations is returned, filtered by first name, last name and email address
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  showDuplicates: Boolean
+
+  """
+  Set limit on most recent guests returned. If not passed it will return all
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  guestLimit: Int
+}
+
 """
 ListGuestRegistrationsInput
 GraphMeta: {
@@ -415,22 +567,6 @@ input ListRecentRegistrationsInput {
   guestLimit: Int
 }
 
-"""
-WeWork Location
-GraphMeta: {
- "release": "1.2.0"
-}
-"""
-type Location @key(fields: "id") @extends {
-  """
-  Location UUID
-  GraphMeta: {
-   "release": "1.2.0"
-  }
-  """
-  id: ID! @external
-}
-
 type Mutation {
   """
   Create a group registration
@@ -452,11 +588,11 @@ type Mutation {
   }
   """
   doUpdateGroupRegistration(
-    """New group registration records to update to"""
-    input: UpdateGuestRegistrationInput!
-
     """ID of the existing group registration to be updated"""
     id: ID!
+
+    """New group registration records to update to"""
+    input: UpdateGuestRegistrationInput!
   ): GroupRegistrationMutationResult!
 
   """
@@ -493,11 +629,11 @@ type Mutation {
   }
   """
   doUpdateGuestRegistration(
-    """New group registration records to update to"""
-    groupRegistration: UpdateGuestRegistrationInput!
-
     """UUID of the existing group registration to be updated"""
     id: ID!
+
+    """New group registration records to update to"""
+    groupRegistration: UpdateGuestRegistrationInput!
   ): GroupRegistrationMutationResult! @deprecated(reason: "use doUpdateGroupRegistration")
 
   """
@@ -515,139 +651,211 @@ type Mutation {
 }
 
 """
-Represents an error that may have occurred during this mutation
+CreateGroupRegistrationInput
+GraphMeta: {
+ "release": "1.4.0"
+}
+"""
+input CreateGroupRegistrationInput {
+  """
+  ID for the location at which a guest is expected
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  locationId: ID!
+
+  """
+  Time at which a guest is expected, represented as an RFC 3339 date string (e.g., '2022-06-01T17:00:00+00:00')
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  expectedTime: String!
+
+  """
+  Guest comment associated with new group reservation
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  guestComment: String
+
+  """
+  Internal comments visible to WeWork staff
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  comment: String
+
+  """
+  Determines whether or not to send the guests an email
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  sendGuestEmail: Boolean!
+
+  """
+  ID for the user who has registered a guest
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  hostId: ID!
+
+  """
+  Individual guest registrations in the group
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  registrations: [RegistrationInput!]!
+}
+
+"""
+RegistrationInput
 GraphMeta: {
  "release": "1.0.0"
 }
 """
-type MutationError {
+input RegistrationInput {
   """
-  The error message
+  First name of registering guest
   GraphMeta: {
    "release": "1.0.0"
   }
   """
-  message: String!
+  firstName: String!
 
   """
-  The error code representing this error
+  Last name of registering guest
   GraphMeta: {
    "release": "1.0.0"
   }
   """
-  code: String
+  lastName: String
 
   """
-  Represents which system this error originated from
+  Email of registering guest
   GraphMeta: {
    "release": "1.0.0"
   }
   """
-  service: String
+  email: String
 
   """
-  Shows more details of the error, such as what field is at error state and what is the issue
+  Company associated with registering guest
   GraphMeta: {
-   "release": "1.6.0"
+   "release": "1.0.0"
   }
   """
-  details: String
+  company: String
 }
 
-"""Represents the result of a mutation"""
-interface MutationResult {
+"""
+UpdateGuestRegistrationInput
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+input UpdateGuestRegistrationInput {
   """
-  Represents if this mutation was executed successfully or not
+  FC3339 formatted datestring representing the expected date-time
   GraphMeta: {
    "release": "1.0.0"
   }
   """
-  isSuccess: Boolean!
+  expectedTime: String
 
   """
-  Represents if this mutation was executed successfully or not
+  Guest comment
   GraphMeta: {
    "release": "1.0.0"
   }
   """
-  errors: [MutationError!]
+  guestComment: String
+
+  """
+  Comment
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  comment: String
+
+  """
+  Send guest email
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  sendGuestEmail: Boolean
+
+  """
+  FC3339 formatted datestring representing when the registration was last modified
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  updatedTime: String!
+
+  """
+  Registrations
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  registrations: [RegistrationUpdateInput!]!
 }
 
-type Query {
+"""
+RegistrationUpdateInput
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+input RegistrationUpdateInput {
   """
-  Get all registrations belonging to the member
+  Registration UUID
   GraphMeta: {
-   "release": "1.4.0",
-   "acceptedTokenTypes": "member"
+   "release": "1.0.0"
   }
   """
-  getGroupRegistrations(
-    """TODO"""
-    input: GetGroupRegistrationsInput!
-  ): [GroupRegistration!]!
+  id: ID!
 
   """
-  Get a group registration
+  First name
   GraphMeta: {
-   "release": "1.4.0",
-   "acceptedTokenTypes": "member"
+   "release": "1.0.0"
   }
   """
-  getGroupRegistration(
-    """The ID of the group registration"""
-    id: ID!
-  ): GroupRegistration!
+  firstName: String!
 
   """
-  Get recent guest registrations
+  Last name
   GraphMeta: {
-   "release": "1.4.0",
-   "acceptedTokenTypes": "member"
+   "release": "1.0.0"
   }
   """
-  getRecentRegistrations(
-    """TODO"""
-    input: GetRecentRegistrationsInput!
-  ): [Registration!]!
+  lastName: String
 
   """
-  Get all registrations belonging to the user given a location
+  Email
   GraphMeta: {
-   "release": "1.0.0",
-   "acceptedTokenTypes": "member",
-   "deprecatedBy": "getGroupRegistrations"
+   "release": "1.0.0"
   }
   """
-  groupRegistrations(
-    """TODO"""
-    registrationsGetAllInput: ListGuestRegistrationsInput!
-  ): [GroupRegistration!]! @deprecated(reason: "use getGroupRegistrations")
+  email: String
 
   """
-  Get a group registration
+  Company
   GraphMeta: {
-   "release": "1.0.0",
-   "acceptedTokenTypes": "member",
-   "deprecatedBy": "getGroupRegistration"
+   "release": "1.0.0"
   }
   """
-  groupRegistration(
-    """TODO"""
-    id: ID!
-  ): GroupRegistration! @deprecated(reason: "use getGroupRegistration")
-
-  """
-  get recent guest registrations 
-  GraphMeta: {
-   "release": "1.2.0",
-   "acceptedTokenTypes": "member",
-   "deprecatedBy": "getRecentRegistrations"
-  }
-  """
-  recentRegistrations(
-    """Returns the most recent child registration records for the user."""
-    listRecentRegistrationsInput: ListRecentRegistrationsInput!
-  ): [Registration!]! @deprecated(reason: "use getRecentRegistrations")
+  company: String
 }
 
 """
@@ -712,212 +920,4 @@ input RegisterGuestsInput {
   }
   """
   registrations: [RegistrationInput!]!
-}
-
-"""
-Registration object
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-type Registration {
-  """
-  Guest registration ID
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  id: ID!
-
-  """
-  Guest's first name
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  firstName: String
-
-  """
-  Guest's last name
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  lastName: String
-
-  """
-  Guest's email address
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  email: String
-
-  """
-  Company that guest is associated with, if applicable
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  company: String
-
-  """
-  When the registration was created
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  createdTime: String!
-
-  """
-  When this record was last updated, if applicable
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  updatedTime: String
-}
-
-"""
-RegistrationInput
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-input RegistrationInput {
-  """
-  First name of registering guest
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  firstName: String!
-
-  """
-  Last name of registering guest
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  lastName: String
-
-  """
-  Email of registering guest
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  email: String
-
-  """
-  Company associated with registering guest
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  company: String
-}
-
-"""
-RegistrationUpdateInput
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-input RegistrationUpdateInput {
-  """
-  Registration UUID
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  id: ID!
-
-  """
-  First name
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  firstName: String!
-
-  """
-  Last name
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  lastName: String
-
-  """
-  Email
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  email: String
-
-  """
-  Company
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  company: String
-}
-
-"""
-UpdateGuestRegistrationInput
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-input UpdateGuestRegistrationInput {
-  """
-  FC3339 formatted datestring representing the expected date-time
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  expectedTime: String
-
-  """
-  Guest comment
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  guestComment: String
-
-  """
-  Comment
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  comment: String
-
-  """
-  Send guest email
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  sendGuestEmail: Boolean
-
-  """
-  FC3339 formatted datestring representing when the registration was last modified
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  updatedTime: String!
-
-  """
-  Registrations
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  registrations: [RegistrationUpdateInput!]!
 }
