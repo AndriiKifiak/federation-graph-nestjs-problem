@@ -1,41 +1,73 @@
 """
-Input defining criteria by which to search for inventory
+Common pagination result type
 GraphMeta: {
  "release": "1.8.0"
 }
 """
-input GetInventoryItemsInput {
+type PaginationResult {
   """
-  Pagination parameters
+  Number of pages skipped
   GraphMeta: {
    "release": "1.8.0"
   }
   """
-  pagination: PaginationInput
+  offset: Int
 
   """
-  Parameters by which to filter the result
+  Maximum number of elements in the page result
   GraphMeta: {
    "release": "1.8.0"
   }
   """
-  filter: InventoryItemsFilterInput
+  limit: Int
+
+  """
+  Total number of elements in the page result
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  total: Int
 }
 
 """
-An amenity belonging to an inventory item. For example, a whiteboard
+Represents the federated Location entity
 GraphMeta: {
  "release": "1.8.0"
 }
 """
-type InventoryAmenity {
+type Location {
   """
-  The name of the amenity
+  ID for this user
   GraphMeta: {
    "release": "1.8.0"
   }
   """
-  name: String
+  id: ID!
+}
+
+"""
+Physical properties of the space
+GraphMeta: {
+ "release": "1.8.0"
+}
+"""
+type SpaceProperties {
+  """
+  Indicates whether or not the space has a window
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  hasWindow: Boolean
+
+  """
+  The square footage of the space
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  squareFootage: Float
 }
 
 """
@@ -52,6 +84,38 @@ type InventoryImage {
   }
   """
   url: String
+}
+
+"""
+Details about the product that is associated with the inventory item
+GraphMeta: {
+ "release": "1.8.0"
+}
+"""
+type InventoryProduct {
+  """
+  The ID of the product
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  id: ID!
+}
+
+"""
+An amenity belonging to an inventory item. For example, a whiteboard
+GraphMeta: {
+ "release": "1.8.0"
+}
+"""
+type InventoryAmenity {
+  """
+  The name of the amenity
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  name: String
 }
 
 """
@@ -174,118 +238,6 @@ type InventoryItemResponse {
   pagination: PaginationResult!
 }
 
-"""
-Filters describing how to fetch the inventory
-GraphMeta: {
- "release": "1.8.0"
-}
-"""
-input InventoryItemsFilterInput {
-  """
-  A filter signifying that only inventory updated past the given time should be included, represented as an RFC 3339 date string (e.g., '2022-06-01T17:00:00Z')
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  minUpdatedTime: String
-
-  """
-  The list of inventory IDs to fetch
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  ids: [ID!]
-}
-
-"""
-Details about the product that is associated with the inventory item
-GraphMeta: {
- "release": "1.8.0"
-}
-"""
-type InventoryProduct {
-  """
-  The ID of the product
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  id: ID!
-}
-
-"""
-Represents the federated Location entity
-GraphMeta: {
- "release": "1.8.0"
-}
-"""
-type Location @extends @key(fields: "id") {
-  """
-  ID for this user
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  id: ID! @external
-}
-
-"""
-Common pagination input type
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-input PaginationInput {
-  """
-  Number of elements to skip over when determining the start of a page.
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  offset: Int
-
-  """
-  Number of elements in a page
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  limit: Int
-}
-
-"""
-Common pagination result type
-GraphMeta: {
- "release": "1.8.0"
-}
-"""
-type PaginationResult {
-  """
-  Number of pages skipped
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  offset: Int
-
-  """
-  Maximum number of elements in the page result
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  limit: Int
-
-  """
-  Total number of elements in the page result
-  GraphMeta: {
-   "release": "1.8.0"
-  }
-  """
-  total: Int
-}
-
 type Query {
   """
   Gets an inventory item by id
@@ -319,25 +271,73 @@ type Query {
 }
 
 """
-Physical properties of the space
+Input defining criteria by which to search for inventory
 GraphMeta: {
  "release": "1.8.0"
 }
 """
-type SpaceProperties {
+input GetInventoryItemsInput {
   """
-  Indicates whether or not the space has a window
+  Pagination parameters
   GraphMeta: {
    "release": "1.8.0"
   }
   """
-  hasWindow: Boolean
+  pagination: PaginationInput
 
   """
-  The square footage of the space
+  Parameters by which to filter the result
   GraphMeta: {
    "release": "1.8.0"
   }
   """
-  squareFootage: Float
+  filter: InventoryItemsFilterInput
+}
+
+"""
+Common pagination input type
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+input PaginationInput {
+  """
+  Number of elements to skip over when determining the start of a page.
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  offset: Int
+
+  """
+  Number of elements in a page
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  limit: Int
+}
+
+"""
+Filters describing how to fetch the inventory
+GraphMeta: {
+ "release": "1.8.0"
+}
+"""
+input InventoryItemsFilterInput {
+  """
+  A filter signifying that only inventory updated past the given time should be included, represented as an RFC 3339 date string (e.g., '2022-06-01T17:00:00Z')
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  minUpdatedTime: String
+
+  """
+  The list of inventory IDs to fetch
+  GraphMeta: {
+   "release": "1.8.0"
+  }
+  """
+  ids: [ID!]
 }

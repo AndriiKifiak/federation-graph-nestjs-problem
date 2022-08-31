@@ -1,204 +1,4 @@
 """
-A pared-down representation of an account, without any privileged data included
-GraphMeta: {
- "release": "1.1.0"
-}
-"""
-type AccountBasic {
-  """
-  ID of the account
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  id: ID!
-
-  """
-  Name of the account
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  name: String!
-}
-
-"""
-Adjustments
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-type Adjustments {
-  """
-  amount
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  amount: Float!
-
-  """
-  currency code
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  currency: String!
-
-  """
-  type of adjustment
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  type: String!
-
-  """
-  promo code
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  code: String!
-}
-
-"""
-Filter out shared workspaces that do not have available capacity within the search range
-GraphMeta: {
- "release": "1.1.0"
-}
-"""
-input AvailabilityFilterInput {
-  """
-  RFC3339 formated datestring representing the start of the availability search range
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  startTime: String!
-
-  """
-  RFC3339 formatted datestring representing the end of the availability search range
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  endTime: String!
-}
-
-"""
-Represents a reservation on a bookable resource
-GraphMeta: {
- "release": "1.1.0"
-}
-"""
-type Booking {
-  """
-  ID of the reservation
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  id: ID!
-
-  """
-  Time at which the reservation starts, represented as an RFC 3339 date string
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  startTime: String!
-
-  """
-  Time at which the reservation ends, represented as an RFC 3339 date string
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  endTime: String!
-
-  """
-  Time at which the reservation was created, represented as an RFC 3339 date string
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  createdTime: String!
-
-  """
-  Time at which the reservation was updated, represented as an RFC 3339 date string
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  updatedTime: String!
-
-  """
-  Time at which the reservation was cancelled, represented as an RFC 3339 date string
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  cancelledTime: String
-
-  """
-  The creator of a booking
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  creator: User!
-
-  """
-  The owner of a booking
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  owner: User!
-
-  """
-  RFC3339 formatted datestring representing the deadline for making modifications to this reservation. After this deadline, the reservation cannot be updated or cancelled.
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  modificationDeadlineTime: String!
-
-  """
-  The order associated with the booking
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  order: Order!
-
-  """
-  Whether the authenticated user owns this booking
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  isCurrentUsersBooking: Boolean!
-
-  """
-  The reservable resource associated with this booking.
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  reservable: ReservableUnion
-
-  """
-  The order representing how this booking was paid for. NOTE: Not to be confused with on-demand orders.
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  creditOrder: CreditOrder!
-}
-
-"""
 BookingCreditUsage (usage) returned by rooms-api
 GraphMeta: {
  "release": "1.1.0"
@@ -222,221 +22,341 @@ type BookingCreditUsage {
   creditsAllotted: String!
 }
 
-"""Sort order parameters for conference rooms."""
-enum BookingSortOrder {
-  START
-  START_DESC
-  FINISH
-  FINISH_DESC
-  RESERVABLE_TYPE
-  RESERVABLE_TYPE_DESC
-}
-
 """
-Input for specifying a time range for querying bookings
-GraphMeta: {
- "release": "1.5.1"
-}
-"""
-input BookingTimeRange {
-  """
-  RFC3339 formatted datestring representing the start of the time range.
-  GraphMeta: {
-   "release": "1.5.1"
-  }
-  """
-  startTime: String!
-
-  """
-  RFC3339 formatted datestring representing the end of the time range.
-  GraphMeta: {
-   "release": "1.5.1"
-  }
-  """
-  endTime: String!
-}
-
-"""
-Cancel booking result
-GraphMeta: {
- "release": "1.4.0"
-}
-"""
-type CancelBookingResult implements MutationResult {
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  isSuccess: Boolean!
-
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  errors: [MutationError!]
-
-  """
-  The booking cancelled by the request
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  result: Booking
-}
-
-"""
-Cancel fulfillment result
-GraphMeta: {
- "release": "1.5.0"
-}
-"""
-type CancelFulfillmentResult implements MutationResult {
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  isSuccess: Boolean!
-
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  errors: [MutationError!]
-
-  """
-  The fulfillment cancelled
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  result: Cancellation
-}
-
-"""
-The cancellation of a fulfillment made through the Order Service
+Reservable Schedule
 GraphMeta: {
  "release": "1.1.0"
 }
 """
-type Cancellation {
+type Schedule {
   """
-  cancellation id
+  day of the week
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  id: ID!
+  day: String!
 
   """
-  the status of the cancellation
+  opening time
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  status: CancellationStatus!
+  openTime: String!
 
   """
-  more details about the status cancellation
+  closing time
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  statusDetail: [OrderStatusDetail!]!
-
-  """
-  the fulfillment id being cancelled
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  fulfillmentId: String!
-
-  """
-  the subtotal reimbursement of the cancellation if any
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  subTotal: Money!
-
-  """
-  the grand total reimbursement of the cancellation if any
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  grandTotal: Money!
-
-  """
-  the taxes associated with the order that was cancelled
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  taxes: [Tax!]!
-
-  """
-  The order associated with the cancellation
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  order: Order!
-}
-
-"""The status of a given cancellation"""
-enum CancellationStatus {
-  INITIALIZED
-  SUCCEEDED
-  FAILED
+  closeTime: String!
 }
 
 """
-The cancellation status of a fulfillment made through the Order Service
+Metadata about conference rooms within a location
 GraphMeta: {
  "release": "1.5.0"
 }
 """
-type CancellationStatusResponse {
+type ReservableMetadata {
   """
-  Cancellation ID
+  The local policy for cancelling a booked desk. Text is translated based on the member's locale
   GraphMeta: {
    "release": "1.5.0"
+  }
+  """
+  dailyDeskCancellationPolicy: String
+
+  """
+  The local policy for cancelling a conference room. Text is translated based on the member's locale
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  conferenceRoomCancellationPolicy: String
+
+  """
+  A count of conference rooms in a location
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  conferenceRoomCount: Float @deprecated(reason: "To be replaced with a dedicated query")
+
+  """
+  A count of bookable spaces in a location (e.g. desks)
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  bookableSpaceCount: Float @deprecated(reason: "To be replaced with dedicated queries")
+}
+
+"""
+WeWork Location basic attributes
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type Location {
+  """
+  Location UUID
+  GraphMeta: {
+   "release": "1.0.0"
   }
   """
   id: ID!
 
   """
-  The status of the cancellation
+  Metadata about reservable within this location
   GraphMeta: {
    "release": "1.5.0"
   }
   """
-  status: CancellationStatusResponse!
+  reservableMetadata: ReservableMetadata
+}
+
+"""
+Private Office Amenities
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+type PrivateOfficeAmenities {
+  """
+  Amenity ID
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  id: ID!
 
   """
-  More details about the status cancellation
+  Amenity name
   GraphMeta: {
-   "release": "1.5.0"
+   "release": "1.1.0"
   }
   """
-  statusDetail: [OrderStatusDetail!]!
+  displayName: String!
+}
+
+"""
+Private Office
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+type PrivateOffice implements Reservable {
+  """
+  Private Office uuid
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  id: ID!
 
   """
-  The fulfillment ID being cancelled
+  Capacity
   GraphMeta: {
-   "release": "1.5.0"
+   "release": "1.1.0"
   }
   """
-  fulfillmentId: String!
+  capacity: Int!
+
+  """
+  Location
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  location: Location!
+
+  """
+  Product Price
+  GraphMeta: {
+   "release": "10.0.0"
+  }
+  """
+  productPrice(
+    """ProductPriceInput"""
+    input: ProductPriceInput!
+  ): OrderablePrice!
+
+  """
+  Private Office name
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  name: String!
+
+  """
+  ImageURL
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  imageUrl: String!
+
+  """
+  Name of the floor where this office is located
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  floorName: String!
+
+  """
+  Open time
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  openTime: String! @deprecated(reason: "Data not available")
+
+  """
+  Close time
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  closeTime: String! @deprecated(reason: "Data not available")
+
+  """
+  Amenity Tags
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  amenities: [PrivateOfficeAmenities!]!
+
+  """
+  Operating Hours
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  operatingHours: [Schedule!]!
+}
+
+"""An interface for a reservable resource"""
+interface Reservable {
+  """
+  The uuid of the reservable
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  id: ID!
+
+  """
+  The total capacity of the reservable
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  capacity: Int!
+
+  """
+  The location of this reservable
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  location: Location!
+
+  """
+  Product Price
+  GraphMeta: {
+   "release": "10.0.0"
+  }
+  """
+  productPrice(
+    """ProductPriceInput"""
+    input: ProductPriceInput!
+  ): OrderablePrice!
+}
+
+"""
+account information required to return the correct local price
+GraphMeta: {
+ "release": "10.0.0"
+}
+"""
+input ProductPriceInput {
+  """
+  the ID of the member associated with the account
+  GraphMeta: {
+   "release": "10.0.0"
+  }
+  """
+  userId: ID!
+
+  """
+  the ID of the membership
+  GraphMeta: {
+   "release": "10.0.0"
+  }
+  """
+  userMembershipId: ID!
+
+  """
+  the account ID
+  GraphMeta: {
+   "release": "10.0.0"
+  }
+  """
+  accountId: ID!
+}
+
+"""
+Conference Room Amenities
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type ConferenceRoomAmenities {
+  """
+  Amenity ID
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  id: ID!
+
+  """
+  Amenity name
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  displayName: String!
+}
+
+"""
+Conference Room Credit Mapping
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type ConferenceRoomCreditMapping {
+  """
+  TODO
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  time: String!
+
+  """
+  TODO
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  credits: String!
 }
 
 """
@@ -579,16 +499,16 @@ type ConferenceRoom implements Reservable {
 }
 
 """
-Conference Room Amenities
+Private Access Area Amenities
 GraphMeta: {
- "release": "1.0.0"
+ "release": "1.5.0"
 }
 """
-type ConferenceRoomAmenities {
+type PrivateAccessAreaAmenities {
   """
   Amenity ID
   GraphMeta: {
-   "release": "1.0.0"
+   "release": "1.5.0"
   }
   """
   id: ID!
@@ -596,1628 +516,10 @@ type ConferenceRoomAmenities {
   """
   Amenity name
   GraphMeta: {
-   "release": "1.0.0"
+   "release": "1.5.0"
   }
   """
   displayName: String!
-}
-
-"""
-Conference Room Credit Mapping
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-type ConferenceRoomCreditMapping {
-  """
-  TODO
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  time: String!
-
-  """
-  TODO
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  credits: String!
-}
-
-"""
-ConferenceRoomItem
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-type ConferenceRoomItem implements Orderable {
-  """
-  startTime
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  startTime: String!
-
-  """
-  endTime
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  endTime: String!
-
-  """
-  quantity
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  quantity: Int!
-
-  """
-  subTotal
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  subTotal: Money!
-
-  """
-  grandTotal
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  grandTotal: Money!
-
-  """
-   promo code adjustments
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  adjustments: [Adjustments!]
-
-  """
-   taxes
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  taxes: [Tax!]
-
-  """
-  fulfillmentId
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  fulfillmentId: ID
-
-  """
-  The conference room for the quote
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  conferenceRoom: ConferenceRoom!
-}
-
-"""
-Lat-Long coordinate pair
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-input Coordinate {
-  """
-  latitude
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  latitude: String!
-
-  """
-  longitude
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  longitude: String!
-}
-
-"""
-Create booking result
-GraphMeta: {
- "release": "1.4.0"
-}
-"""
-type CreateBookingResult implements MutationResult {
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  isSuccess: Boolean!
-
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  errors: [MutationError!]
-
-  """
-  The booking created by requesting a booking
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  result: Booking
-}
-
-"""
-Represents a reservation on a bookable resource.
-GraphMeta: {
- "release": "1.1.0"
-}
-"""
-type CreatedOrder {
-  """
-  order id
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  id: ID!
-
-  """
-  the status of the order
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  status: OrderStatus!
-}
-
-"""
-Represents a reservation on a bookable resource.
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-type CreatedQuote {
-  """
-  quote uuid
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  id: ID!
-
-  """
-  quote status
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  status: QuoteStatus!
-}
-
-"""
-Represents the payment for a booking
-GraphMeta: {
- "release": "1.1.0"
-}
-"""
-type CreditOrder {
-  """
-  Number of credits charged
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  price: String!
-
-  """
-  A pared-down representation of the account to which the order was charged, without any privileged data included
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  chargedTo: AccountBasic!
-}
-
-"""
-Wrapper for the doCancelBooking mutation
-GraphMeta: {
- "release": "1.4.0"
-}
-"""
-input DoCancelBookingInput {
-  """
-  The UUID of the booking resource
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  id: ID!
-
-  """
-  The number of credits to refund
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  credits: Int
-
-  """
-  Notes to add to the cancellation
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  notes: String
-
-  """
-  The reservation cancellation reason to association this cancellation with
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  reasonId: String
-}
-
-"""
-Cancel fulfillment input params
-GraphMeta: {
- "release": "1.5.0"
-}
-"""
-input DoCancelFulfillmentInput {
-  """
-  Fulfillment ID to cancel
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  fulfillmentId: String!
-
-  """
-  User ID who is cancelling this fulfillment
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  requesterId: String!
-}
-
-"""
-Wrapper for the doCreateBooking mutation
-GraphMeta: {
- "release": "1.4.0"
-}
-"""
-input DoCreateBookingInput {
-  """
-  The UUID of the reservable resource
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  reservableId: ID!
-
-  """
-  The type of reservable
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  type: ReservableType!
-
-  """
-  The UUID of the account this booking should be charged to
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  chargedToAccountId: ID!
-
-  """
-  RFC3339 formatted datestring representing the start of the booking period
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  startTime: String!
-
-  """
-  RFC3339 formatted datestring representing the end of the booking period
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  endTime: String!
-}
-
-"""
-Input for EditInventoryPermissions mutation
-GraphMeta: {
- "release": "10.0.0"
-}
-"""
-input DoEditInventoryPermissionsInput {
-  """
-  The uuid of the reservable
-  GraphMeta: {
-   "release": "10.0.0"
-  }
-  """
-  id: ID!
-}
-
-"""
-TODO
-GraphMeta: {
- "release": "10.0.0"
-}
-"""
-input DoEditScheduleInput {
-  """
-  The uuid of the reservable
-  GraphMeta: {
-   "release": "10.0.0"
-  }
-  """
-  id: ID!
-
-  """
-  The weekly schedule to change to
-  GraphMeta: {
-   "release": "10.0.0"
-  }
-  """
-  weeklySchedule: [WeeklySchedule!]!
-}
-
-"""
-Place Order Input params
-GraphMeta: {
- "release": "1.1.0"
-}
-"""
-input DoPlaceOrderInput {
-  """
-  The order placer's account - generally the company a member belongs to
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  accountId: ID
-
-  """
-  The payment method - eg corresponding to a credit card on file, etc
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  paymentProfileId: ID
-
-  """
-  The quote to base this order on. Quote must have status of READY to successfully place an order
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  quoteId: ID
-
-  """
-  The person making the order. Usually the same as the user, but not always
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  requesterId: ID
-
-  """
-  The user who will be receiving or using the ordered products
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  userId: ID
-}
-
-"""
-request quote input
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-input DoRequestQuoteInput {
-  """
-  currency code
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  currency: String!
-
-  """
-  items being ordered
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  lineItems: [QuoteLineItem!]!
-
-  """
-   The userId that the quote is being made for
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  userId: ID!
-
-  """
-   The user membership uuid of the user in which the quote is being made for
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  userMembershipId: ID
-}
-
-"""
-Wrapper for the doUpdateBooking mutation
-GraphMeta: {
- "release": "1.4.0"
-}
-"""
-input DoUpdateBookingInput {
-  """
-  The UUID of the reservation
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  id: ID!
-
-  """
-  RFC3339 formatted datestring representing the start of the booking period
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  startTime: String
-
-  """
-  RFC3339 formatted datestring representing the end of the booking period
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  endTime: String
-
-  """
-  Additional notes to add to the booking
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  notes: String
-}
-
-"""
-Edit inventory permissions result
-GraphMeta: {
- "release": "10.0.0"
-}
-"""
-type EditInventoryPermissionsResult implements MutationResult {
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  isSuccess: Boolean!
-
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  errors: [MutationError!]
-}
-
-"""
-Edit schedule result
-GraphMeta: {
- "release": "10.0.0"
-}
-"""
-type EditScheduleResult implements MutationResult {
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  isSuccess: Boolean!
-
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  errors: [MutationError!]
-}
-
-"""
-Wrapper for getAvailableInventory query
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-input GetConferenceRoomsInput {
-  """
-  roomsFilter input
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  filter: RoomsFilterInput!
-
-  """
-  pagination input
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  pagination: PaginationInput!
-
-  """
-  sort order input
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  sortOrder: [RoomSortOrder!]!
-}
-
-"""
-GetConferenceRoomsResponse
-GraphMeta: {
- "release": "1.6.2"
-}
-"""
-type GetConferenceRoomsResponse {
-  """
-  The conference rooms resulting from the query
-  GraphMeta: {
-   "release": "1.6.2"
-  }
-  """
-  conferenceRooms: [ConferenceRoom!]!
-
-  """
-  Total number of results that can be returned
-  GraphMeta: {
-   "release": "1.6.2"
-  }
-  """
-  totalCount: Int!
-}
-
-"""
-Wrapper for getGlobalAvailableInventory query
-GraphMeta: {
- "release": "10.0.0"
-}
-"""
-input GetGlobalAvailableInventoryInput {
-  """
-  timeRange
-  GraphMeta: {
-   "release": "10.0.0"
-  }
-  """
-  timeRange: BookingTimeRange!
-
-  """
-  locationIds
-  GraphMeta: {
-   "release": "10.0.0"
-  }
-  """
-  locationIds: [ID!]!
-}
-
-"""
-Accepted filter options for searching locations by room/space info
-GraphMeta: {
- "release": "1.5.0"
-}
-"""
-input GetLocationsByReservableFilterInput {
-  """
-  The type of reservable space to base other filter criteria on. Defaults to conference rooms
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  reservableType: ReservableType
-
-  """
-  Only return a subset of locations within this list
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  locationIds: [ID!]
-
-  """
-  The date/time at which spaces at the location should be accessible. RFC3339 formatted date string
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  accessibleOn: String
-
-  """
-  The minimum capacity of at least one space at the location; capacity in at least one space should be greater than or equal to this number
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  capacityMinimum: Float
-
-  """
-  The amenity tags that should match at least one space at the location. The tags match using an OR logic
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  amenities: [String!]
-
-  """
-  The time that at least one space should be available in the location
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  timeAvailable: TimeFilterInput
-
-  """
-  Point in geospatial coordinates which the location must be near
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  nearby: NearbyFilterInput
-
-  """
-  Ensures that at least one reservable space at the location is bookable by the given membership type
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  userMembershipId: String
-
-  """
-  Pagination info. Defaults to 0 offset and 50 limit.
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  pagination: PaginationInput
-}
-
-"""
-Input for MyBookingCreditUsage query
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-input GetMyBookingCreditUsageInput {
-  """
-  Account ID of the user (generally is the same as company ID)
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  accountId: ID!
-
-  """
-  An RFC3339 formatted date string used to scope credit spend.
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  startTime: String!
-
-  """
-  An RFC3339 formatted date string used to scope credit spend.
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  endTime: String!
-}
-
-"""
-PastBookingsInput
-GraphMeta: {
- "release": "1.1.0"
-}
-"""
-input GetPastBookingsInput {
-  """
-  Filter bookings by owner
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  ownerId: ID!
-
-  """
-  The type of reservable this reservation was created for
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  reservableType: ReservableType
-
-  """
-  The user membership uuid the booking was made under
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  userMembershipId: ID
-
-  """
-  RFC3339 formatted datestring representing the beginning of the search range.
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  finishingBeforeTime: String!
-
-  """
-  pagination input
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  pagination: PaginationInput!
-
-  """
-  sort order input
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  sortOrder: [BookingSortOrder!]!
-}
-
-"""
-GetPrivateAccessAreasInput
-GraphMeta: {
- "release": "1.5.0"
-}
-"""
-input GetPrivateAccessAreasInput {
-  """
-  filter for result set
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  filter: PrivateAccessAreaFilterInput!
-
-  """
-  pagination input
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  pagination: PaginationInput!
-
-  """
-  sort order input
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  sortOrder: [PrivateAccessAreaSortOrder!]
-}
-
-"""
-GetPrivateAccessAreasResponse
-GraphMeta: {
- "release": "1.5.0"
-}
-"""
-type GetPrivateAccessAreasResponse {
-  """
-  The private access areas resulting from the query
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  offices: [PrivateAccessArea!]!
-
-  """
-  Total number of results that can be returned
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  totalCount: Int!
-}
-
-"""
-GetPrivateOfficesInput
-GraphMeta: {
- "release": "1.1.0"
-}
-"""
-input GetPrivateOfficesInput {
-  """
-  filter for result set
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  filter: PrivateOfficeFilterInput!
-
-  """
-  pagination input
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  pagination: PaginationInput!
-
-  """
-  sort order input
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  sortOrder: [PrivateOfficeSortOrder!]
-}
-
-"""
-GetPrivateOfficesResponse
-GraphMeta: {
- "release": "1.1.0"
-}
-"""
-type GetPrivateOfficesResponse {
-  """
-  The private offices resulting from the query
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  offices: [PrivateOffice!]!
-
-  """
-  Total number of results that can be returned
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  totalCount: Int!
-}
-
-"""
-Input for querying reservation schedule by ID and time range
-GraphMeta: {
- "release": "1.5.0"
-}
-"""
-input GetReservationScheduleInput {
-  """
-  ID of the reservable resource
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  reservableId: ID!
-
-  """
-  The type of reservable
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  type: ReservableType!
-
-  """
-  Only show reservations within this range
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  timeRange: BookingTimeRange!
-}
-
-"""
-SharedWorkspacesInput
-GraphMeta: {
- "release": "1.1.0"
-}
-"""
-input GetSharedWorkspacesInput {
-  """
-  filter for result set
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  filter: SharedWorkspaceFilterInput!
-
-  """
-  pagination input
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  pagination: PaginationInput!
-
-  """
-  sort order input
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  sortOrder: [SharedWorkspaceSortOrder!]
-}
-
-"""
-GetSharedWorkspacesResponse
-GraphMeta: {
- "release": "1.1.0"
-}
-"""
-type GetSharedWorkspacesResponse {
-  """
-  The shared workspaces resulting from the query
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  workspaces: [SharedWorkspace!]!
-
-  """
-  Total number of results that can be returned
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  totalCount: Int!
-}
-
-"""
-UpcomingBookingsInput
-GraphMeta: {
- "release": "1.1.0"
-}
-"""
-input GetUpcomingBookingsInput {
-  """
-  Filter bookings by owner
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  ownerId: ID!
-
-  """
-  RFC3339 formatted datestring. If provided, query will filter bookings that finish after this date
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  finishingAfterTime: String!
-
-  """
-  The type of reservable this reservation was created for
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  reservableType: ReservableType
-
-  """
-  The user membership uuid the booking was made under
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  userMembershipId: ID
-
-  """
-  pagination input
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  pagination: PaginationInput!
-
-  """
-  sort order input
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  sortOrder: [BookingSortOrder!]!
-}
-
-"""Line item types"""
-enum LineItemEnum {
-  SHARED_WORKSPACE
-  CONFERENCE_ROOM
-}
-
-"""
-WeWork Location basic attributes
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-type Location @key(fields: "id") @extends {
-  """
-  Location UUID
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  id: ID! @external
-
-  """
-  Metadata about reservable within this location
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  reservableMetadata: ReservableMetadata
-}
-
-"""
-Money type for expressing currency amounts.
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-type Money {
-  """
-  currency code
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  currency: String!
-
-  """
-  amount
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  amount: Float!
-}
-
-type Mutation {
-  """
-  TODO
-  GraphMeta: {
-   "release": "10.0.0",
-   "acceptedTokenTypes": "member"
-  }
-  """
-  doEditInventoryPermissions(
-    """TODO"""
-    doEditInventoryPermissionsInput: DoEditInventoryPermissionsInput!
-  ): EditInventoryPermissionsResult!
-
-  """
-  TODO
-  GraphMeta: {
-   "release": "10.0.0",
-   "acceptedTokenTypes": "member"
-  }
-  """
-  doEditSchedule(
-    """TODO"""
-    doEditScheduleInput: DoEditScheduleInput!
-  ): EditScheduleResult!
-
-  """
-  Creates a booking
-  GraphMeta: {
-   "release": "1.4.0",
-   "acceptedTokenTypes": "member"
-  }
-  """
-  doCreateBooking(
-    """Create a new booking"""
-    doCreateBookingInput: DoCreateBookingInput!
-  ): CreateBookingResult!
-
-  """
-  Cancels the booking
-  GraphMeta: {
-   "release": "1.4.0",
-   "acceptedTokenTypes": "member"
-  }
-  """
-  doCancelBooking(
-    """Cancel a booking"""
-    doCancelBookingInput: DoCancelBookingInput!
-  ): CancelBookingResult!
-
-  """
-  Updates the booking with new notes, start time, and/or end time
-  GraphMeta: {
-   "release": "1.4.0",
-   "acceptedTokenTypes": "member"
-  }
-  """
-  doUpdateBooking(
-    """Update a booking"""
-    doUpdateBookingInput: DoUpdateBookingInput!
-  ): UpdateBookingResult!
-
-  """
-  Place a new order
-  GraphMeta: {
-   "release": "1.1.0",
-   "acceptedTokenTypes": "member"
-  }
-  """
-  doPlaceOrder(
-    """Place order input"""
-    doPlaceOrderInput: DoPlaceOrderInput!
-  ): PlaceOrderResult!
-
-  """
-  Cancel an existing fulfillment
-  GraphMeta: {
-   "release": "1.5.0",
-   "acceptedTokenTypes": "member"
-  }
-  """
-  doCancelFulfillment(
-    """Cancel fulfillment input"""
-    input: DoCancelFulfillmentInput!
-  ): CancelFulfillmentResult!
-
-  """
-  Request a quote
-  GraphMeta: {
-   "release": "1.0.0",
-   "acceptedTokenTypes": "member"
-  }
-  """
-  doRequestQuote(
-    """Do request quote input"""
-    doRequestQuoteInput: DoRequestQuoteInput!
-  ): RequestQuoteResult!
-}
-
-"""
-Represents an error that may have occurred during this mutation
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-type MutationError {
-  """
-  The error message
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  message: String!
-
-  """
-  The error code representing this error
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  code: String
-
-  """
-  Represents which system this error originated from
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  service: String
-
-  """
-  Shows more details of the error, such as what field is at error state and what is the issue
-  GraphMeta: {
-   "release": "1.6.0"
-  }
-  """
-  details: String
-}
-
-"""Represents the result of a mutation"""
-interface MutationResult {
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  isSuccess: Boolean!
-
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  errors: [MutationError!]
-}
-
-"""
-NearbyFilterInput
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-input NearbyFilterInput {
-  """
-  Latitude, longitude coordinates (in that order, separated by a comma) for filtering nearby rooms around this point.
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  center: Coordinate!
-
-  """
-  Filter's spaces based on a radius. Unit is in km.
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  radius: Int!
-}
-
-"""
-an order resource
-GraphMeta: {
- "release": "1.1.0"
-}
-"""
-type Order {
-  """
-  order id
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  id: ID!
-
-  """
-  the status of the order
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  status: OrderStatus!
-
-  """
-  gives more details in regards to the status of the order
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  statusDetail: String
-
-  """
-  The status details for the order
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  statusDetails: [OrderStatusDetail!]!
-
-  """
-  accountId
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  accountId: String!
-
-  """
-  payment profile id
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  paymentProfileId: String!
-
-  """
-   order line items
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  lineItems: [OrderableUnion!]!
-
-  """
-  quote grand total that includes taxes
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  grandTotal: Money!
-
-  """
-  quote subtotal that excludes taxes
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  subTotal: Money!
-
-  """
-  promo code adjustments
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  adjustments: [Adjustments!]!
-
-  """
-  taxes
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  taxes: [Tax!]!
-
-  """
-  user action details
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  userActionDetails: [UserActionDetail!]
-}
-
-"""A type that can be quoted and booked"""
-interface Orderable {
-  """
-  startTime
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  startTime: String!
-
-  """
-  endTime
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  endTime: String!
-
-  """
-  quantity
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  quantity: Int!
-
-  """
-  subTotal
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  subTotal: Money!
-
-  """
-  grandTotal
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  grandTotal: Money!
-
-  """
-   promo code adjustments
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  adjustments: [Adjustments!]
-
-  """
-   taxes
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  taxes: [Tax!]
-
-  """
-  fulfillmentId
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  fulfillmentId: ID
-}
-
-"""
-OrderablePrice
-GraphMeta: {
- "release": "10.0.0"
-}
-"""
-type OrderablePrice {
-  """
-  Price id
-  GraphMeta: {
-   "release": "10.0.0"
-  }
-  """
-  id: ID!
-
-  """
-  Product id
-  GraphMeta: {
-   "release": "10.0.0"
-  }
-  """
-  productId: ID!
-
-  """
-  Money amount for the orderable
-  GraphMeta: {
-   "release": "10.0.0"
-  }
-  """
-  price: Money!
-
-  """
-  Time unit for the money amount of the price.
-  GraphMeta: {
-   "release": "10.0.0"
-  }
-  """
-  rateUnit: TimeUnit!
-}
-
-union OrderableUnion = SharedWorkspaceItem | ConferenceRoomItem
-
-"""Status of the order"""
-enum OrderStatus {
-  PLACED
-  FULFILLED
-  CANCELLED
-  REJECTED
-  EXPIRED
-  AWAITING_USER_ACTION
-}
-
-"""
-Order status details
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-type OrderStatusDetail {
-  """
-   status code
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  statusCode: Int!
-
-  """
-   errorCode
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  errorCode: String!
-
-  """
-   message
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  message: String!
-
-  """
-   source
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  source: String!
-}
-
-"""
-Common pagination input type
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-input PaginationInput {
-  """
-  Number of elements to skip over when determining the start of a page.
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  offset: Int
-
-  """
-  Number of elements in a page
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  limit: Int
-}
-
-"""
-Place order result
-GraphMeta: {
- "release": "1.1.0"
-}
-"""
-type PlaceOrderResult implements MutationResult {
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  isSuccess: Boolean!
-
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  errors: [MutationError!]
-
-  """
-  The order created
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  result: CreatedOrder
 }
 
 """
@@ -2336,133 +638,14 @@ type PrivateAccessArea implements Reservable {
 }
 
 """
-Private Access Area Amenities
-GraphMeta: {
- "release": "1.5.0"
-}
-"""
-type PrivateAccessAreaAmenities {
-  """
-  Amenity ID
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  id: ID!
-
-  """
-  Amenity name
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  displayName: String!
-}
-
-"""
-Filter parameters for querying private access areas
-GraphMeta: {
- "release": "1.5.0"
-}
-"""
-input PrivateAccessAreaFilterInput {
-  """
-  Specify the date on which to search
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  accessibleOn: String!
-
-  """
-  Narrow results to private access areas matching the given UUIDs
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  ids: [String!]
-
-  """
-  Narrow results to private access areas in buildings with the given location UUIDs
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  locationIds: [String!]
-
-  """
-  Narrow results to private access areas with a capacity greater than or equal to this value
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  capacityGTE: Int
-
-  """
-  Filter out private access areas that do not have availability within the search range
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  availableBetween: AvailabilityFilterInput
-
-  """
-  Narrow results to private access areas in a particular geolocation. If using this parameter, omit location UUIDs
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  nearbyFilter: PrivateAccessAreaNearbyFilter
-
-  """
-  Filter out private access areas by the membership type of the user membership UUID
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  userMembershipId: String
-}
-
-"""
-Input for querying private access areas by location
-GraphMeta: {
- "release": "1.5.0"
-}
-"""
-input PrivateAccessAreaNearbyFilter {
-  """
-  The center of the search.
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  center: Coordinate!
-
-  """
-  The radius of the search area in kilometers.
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  radius: Int!
-}
-
-"""Sort order parameters for private access areas"""
-enum PrivateAccessAreaSortOrder {
-  FLOOR_NUMBER
-  NAME
-  DISTANCE
-}
-
-"""
-Private Office
+A shared workspace area
 GraphMeta: {
  "release": "1.1.0"
 }
 """
-type PrivateOffice implements Reservable {
+type SharedWorkspace implements Reservable {
   """
-  Private Office uuid
+  id
   GraphMeta: {
    "release": "1.1.0"
   }
@@ -2470,7 +653,7 @@ type PrivateOffice implements Reservable {
   id: ID!
 
   """
-  Capacity
+  The total capacity of this shared workspace
   GraphMeta: {
    "release": "1.1.0"
   }
@@ -2478,7 +661,7 @@ type PrivateOffice implements Reservable {
   capacity: Int!
 
   """
-  Location
+  The location of this shared workspace
   GraphMeta: {
    "release": "1.1.0"
   }
@@ -2497,15 +680,7 @@ type PrivateOffice implements Reservable {
   ): OrderablePrice!
 
   """
-  Private Office name
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  name: String!
-
-  """
-  ImageURL
+  Image URL
   GraphMeta: {
    "release": "1.1.0"
   }
@@ -2513,36 +688,44 @@ type PrivateOffice implements Reservable {
   imageUrl: String!
 
   """
-  Name of the floor where this office is located
+  Header Image URL
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  floorName: String!
+  headerImageUrl: String!
 
   """
-  Open time
+  The number of credits required to book this shared workspace
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  openTime: String! @deprecated(reason: "Data not available")
+  credits: Int!
 
   """
-  Close time
+  The open time for this shared workspace in the format HH:mm
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  closeTime: String! @deprecated(reason: "Data not available")
+  openTime: String!
 
   """
-  Amenity Tags
+  The close time for this shared workspace in the format HH:mm
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  amenities: [PrivateOfficeAmenities!]!
+  closeTime: String!
+
+  """
+  The cancellation policy
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  cancellationPolicy: String!
 
   """
   Operating Hours
@@ -2551,17 +734,59 @@ type PrivateOffice implements Reservable {
   }
   """
   operatingHours: [Schedule!]!
+
+  """
+  The number of shared workspace seats available at this location
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  seatsAvailable(
+    """
+    The datetime for which you want to inquire how many seats are available. Use ISO formatted DateTimes and IANA timezones to prevent surprises.
+    """
+    date: String!
+  ): Int! @deprecated(reason: "Replaced with 'seats' in release 1.7.0")
+
+  """
+  Number of available and total seats for a given date
+  GraphMeta: {
+   "release": "1.7.0"
+  }
+  """
+  seats(
+    """
+    Date for which to get seat availability, represented as an RFC 3339 date string (e.g., '2022-06-01')
+    """
+    date: String!
+  ): SharedWorkspaceSeats!
 }
 
 """
-Private Office Amenities
+Represents the federated user entity
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type User {
+  """
+  ID for this user
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  id: ID!
+}
+
+"""
+Represents a reservation on a bookable resource
 GraphMeta: {
  "release": "1.1.0"
 }
 """
-type PrivateOfficeAmenities {
+type Booking {
   """
-  Amenity ID
+  ID of the reservation
   GraphMeta: {
    "release": "1.1.0"
   }
@@ -2569,139 +794,1433 @@ type PrivateOfficeAmenities {
   id: ID!
 
   """
-  Amenity name
+  Time at which the reservation starts, represented as an RFC 3339 date string
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  displayName: String!
+  startTime: String!
+
+  """
+  Time at which the reservation ends, represented as an RFC 3339 date string
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  endTime: String!
+
+  """
+  Time at which the reservation was created, represented as an RFC 3339 date string
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  createdTime: String!
+
+  """
+  Time at which the reservation was updated, represented as an RFC 3339 date string
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  updatedTime: String!
+
+  """
+  Time at which the reservation was cancelled, represented as an RFC 3339 date string
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  cancelledTime: String
+
+  """
+  The creator of a booking
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  creator: User!
+
+  """
+  The owner of a booking
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  owner: User!
+
+  """
+  RFC3339 formatted datestring representing the deadline for making modifications to this reservation. After this deadline, the reservation cannot be updated or cancelled.
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  modificationDeadlineTime: String!
+
+  """
+  The order associated with the booking
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  order: Order!
+
+  """
+  Whether the authenticated user owns this booking
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  isCurrentUsersBooking: Boolean!
+
+  """
+  The reservable resource associated with this booking.
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  reservable: ReservableUnion
+
+  """
+  The order representing how this booking was paid for. NOTE: Not to be confused with on-demand orders.
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  creditOrder: CreditOrder!
+}
+
+union ReservableUnion = ConferenceRoom | SharedWorkspace | PrivateOffice | PrivateAccessArea
+
+"""
+Represents a reservation schedule on a bookable resource
+GraphMeta: {
+ "release": "1.5.0"
+}
+"""
+type ReservationSchedule {
+  """
+  RFC3339 formatted datestring representing the start time of the reservation
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  startTime: String!
+
+  """
+  RFC3339 formatted datestring representing the end time of the reservation
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  endTime: String!
+
+  """
+  True if the bearer token used to make this request matches the user this booking was made for
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  isCurrentUsersBooking: Boolean!
 }
 
 """
-Filter parameters for querying private office.
+Create booking result
+GraphMeta: {
+ "release": "1.4.0"
+}
+"""
+type CreateBookingResult implements MutationResult {
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  isSuccess: Boolean!
+
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errors: [MutationError!]
+
+  """
+  The booking created by requesting a booking
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  result: Booking
+}
+
+"""Represents the result of a mutation"""
+interface MutationResult {
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  isSuccess: Boolean!
+
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errors: [MutationError!]
+}
+
+"""
+Represents an error that may have occurred during this mutation
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type MutationError {
+  """
+  The error message
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  message: String!
+
+  """
+  The error code representing this error
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  code: String
+
+  """
+  Represents which system this error originated from
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  service: String
+
+  """
+  Shows more details of the error, such as what field is at error state and what is the issue
+  GraphMeta: {
+   "release": "1.6.0"
+  }
+  """
+  details: String
+}
+
+"""
+Cancel booking result
+GraphMeta: {
+ "release": "1.4.0"
+}
+"""
+type CancelBookingResult implements MutationResult {
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  isSuccess: Boolean!
+
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errors: [MutationError!]
+
+  """
+  The booking cancelled by the request
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  result: Booking
+}
+
+"""
+Update booking result
+GraphMeta: {
+ "release": "1.4.0"
+}
+"""
+type UpdateBookingResult implements MutationResult {
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  isSuccess: Boolean!
+
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errors: [MutationError!]
+
+  """
+  The booking as updated
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  result: Booking
+}
+
+"""
+GetConferenceRoomsResponse
+GraphMeta: {
+ "release": "1.6.2"
+}
+"""
+type GetConferenceRoomsResponse {
+  """
+  The conference rooms resulting from the query
+  GraphMeta: {
+   "release": "1.6.2"
+  }
+  """
+  conferenceRooms: [ConferenceRoom!]!
+
+  """
+  Total number of results that can be returned
+  GraphMeta: {
+   "release": "1.6.2"
+  }
+  """
+  totalCount: Int!
+}
+
+"""
+GetSharedWorkspacesResponse
 GraphMeta: {
  "release": "1.1.0"
 }
 """
-input PrivateOfficeFilterInput {
+type GetSharedWorkspacesResponse {
   """
-  Specify the date on which to search
+  The shared workspaces resulting from the query
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  accessibleOn: String!
+  workspaces: [SharedWorkspace!]!
 
   """
-  Narrow results to private office matching the given uuids.
+  Total number of results that can be returned
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  ids: [String!]
-
-  """
-  Narrow results to private office in buildings with the given locationUUIDs.
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  locationIds: [String!]
-
-  """
-  Narrow results to private office with a capacity greater than this value.
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  capacityGTE: Int
-
-  """
-  Filter out shared workspaces that do not have availability within the search range
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  availableBetween: AvailabilityFilterInput
-
-  """
-  Narrow results to private office in a particular geolocation. If using this parameter, omit locationUUIDs.
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  nearbyFilter: PrivateOfficeNearbyFilter
-
-  """
-  Filter out private office by the membership type of the user membership uuid
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  userMembershipId: String
+  totalCount: Int!
 }
 
 """
-Input for querying private office by location.
-GraphMeta: {
- "release": "1.1.0"
-}
-"""
-input PrivateOfficeNearbyFilter {
-  """
-  The center of the search.
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  center: Coordinate!
-
-  """
-  The radius of the search area in kilometers.
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  radius: Int!
-}
-
-"""Sort order parameters for private offices."""
-enum PrivateOfficeSortOrder {
-  FLOOR_NUMBER
-  NAME
-  DISTANCE
-}
-
-"""
-account information required to return the correct local price
+Edit inventory permissions result
 GraphMeta: {
  "release": "10.0.0"
 }
 """
-input ProductPriceInput {
+type EditInventoryPermissionsResult implements MutationResult {
   """
-  the ID of the member associated with the account
+  Represents if this mutation was executed successfully or not
   GraphMeta: {
-   "release": "10.0.0"
+   "release": "1.0.0"
   }
   """
-  userId: ID!
+  isSuccess: Boolean!
 
   """
-  the ID of the membership
+  Represents if this mutation was executed successfully or not
   GraphMeta: {
-   "release": "10.0.0"
+   "release": "1.0.0"
   }
   """
-  userMembershipId: ID!
+  errors: [MutationError!]
+}
+
+"""
+Edit schedule result
+GraphMeta: {
+ "release": "10.0.0"
+}
+"""
+type EditScheduleResult implements MutationResult {
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  isSuccess: Boolean!
 
   """
-  the account ID
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errors: [MutationError!]
+}
+
+"""
+Order status details
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type OrderStatusDetail {
+  """
+   status code
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  statusCode: Int!
+
+  """
+   errorCode
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errorCode: String!
+
+  """
+   message
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  message: String!
+
+  """
+   source
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  source: String!
+}
+
+"""
+Tax details
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type Tax {
+  """
+  tax uuid
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  id: ID!
+
+  """
+  tax amount
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  amount: Float!
+
+  """
+  currency code
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  currency: String!
+
+  """
+  tax description(e.g."3.5%")
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  description: String!
+
+  """
+  tax name(e.g.   "VAT")
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  name: String!
+}
+
+"""
+Money type for expressing currency amounts.
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type Money {
+  """
+  currency code
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  currency: String!
+
+  """
+  amount
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  amount: Float!
+}
+
+"""
+The cancellation of a fulfillment made through the Order Service
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+type Cancellation {
+  """
+  cancellation id
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  id: ID!
+
+  """
+  the status of the cancellation
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  status: CancellationStatus!
+
+  """
+  more details about the status cancellation
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  statusDetail: [OrderStatusDetail!]!
+
+  """
+  the fulfillment id being cancelled
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  fulfillmentId: String!
+
+  """
+  the subtotal reimbursement of the cancellation if any
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  subTotal: Money!
+
+  """
+  the grand total reimbursement of the cancellation if any
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  grandTotal: Money!
+
+  """
+  the taxes associated with the order that was cancelled
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  taxes: [Tax!]!
+
+  """
+  The order associated with the cancellation
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  order: Order!
+}
+
+"""The status of a given cancellation"""
+enum CancellationStatus {
+  INITIALIZED
+  SUCCEEDED
+  FAILED
+}
+
+"""
+The cancellation status of a fulfillment made through the Order Service
+GraphMeta: {
+ "release": "1.5.0"
+}
+"""
+type CancellationStatusResponse {
+  """
+  Cancellation ID
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  id: ID!
+
+  """
+  The status of the cancellation
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  status: CancellationStatusResponse!
+
+  """
+  More details about the status cancellation
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  statusDetail: [OrderStatusDetail!]!
+
+  """
+  The fulfillment ID being cancelled
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  fulfillmentId: String!
+}
+
+"""
+Cancel fulfillment result
+GraphMeta: {
+ "release": "1.5.0"
+}
+"""
+type CancelFulfillmentResult implements MutationResult {
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  isSuccess: Boolean!
+
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errors: [MutationError!]
+
+  """
+  The fulfillment cancelled
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  result: Cancellation
+}
+
+"""
+Adjustments
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type Adjustments {
+  """
+  amount
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  amount: Float!
+
+  """
+  currency code
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  currency: String!
+
+  """
+  type of adjustment
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  type: String!
+
+  """
+  promo code
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  code: String!
+}
+
+"""
+UserActionDetail
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+type UserActionDetail {
+  """
+  action identifier
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  actionIdentifier: String!
+
+  """
+  redirect url
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  redirectUrl: String!
+
+  """
+  stripe payment intent client secret
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  stripePaymentIntentSecret: String!
+}
+
+"""
+an order resource
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+type Order {
+  """
+  order id
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  id: ID!
+
+  """
+  the status of the order
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  status: OrderStatus!
+
+  """
+  gives more details in regards to the status of the order
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  statusDetail: String
+
+  """
+  The status details for the order
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  statusDetails: [OrderStatusDetail!]!
+
+  """
+  accountId
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  accountId: String!
+
+  """
+  payment profile id
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  paymentProfileId: String!
+
+  """
+   order line items
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  lineItems: [OrderableUnion!]!
+
+  """
+  quote grand total that includes taxes
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  grandTotal: Money!
+
+  """
+  quote subtotal that excludes taxes
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  subTotal: Money!
+
+  """
+  promo code adjustments
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  adjustments: [Adjustments!]!
+
+  """
+  taxes
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  taxes: [Tax!]!
+
+  """
+  user action details
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  userActionDetails: [UserActionDetail!]
+}
+
+"""Status of the order"""
+enum OrderStatus {
+  PLACED
+  FULFILLED
+  CANCELLED
+  REJECTED
+  EXPIRED
+  AWAITING_USER_ACTION
+}
+
+union OrderableUnion = SharedWorkspaceItem | ConferenceRoomItem
+
+"""
+SharedWorkspaceItem
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type SharedWorkspaceItem implements Orderable {
+  """
+  startTime
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  startTime: String!
+
+  """
+  endTime
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  endTime: String!
+
+  """
+  quantity
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  quantity: Int!
+
+  """
+  subTotal
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  subTotal: Money!
+
+  """
+  grandTotal
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  grandTotal: Money!
+
+  """
+   promo code adjustments
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  adjustments: [Adjustments!]
+
+  """
+   taxes
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  taxes: [Tax!]
+
+  """
+  fulfillmentId
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  fulfillmentId: ID
+
+  """
+  The shared workspace for the quote
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  sharedWorkspace: SharedWorkspace!
+}
+
+"""A type that can be quoted and booked"""
+interface Orderable {
+  """
+  startTime
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  startTime: String!
+
+  """
+  endTime
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  endTime: String!
+
+  """
+  quantity
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  quantity: Int!
+
+  """
+  subTotal
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  subTotal: Money!
+
+  """
+  grandTotal
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  grandTotal: Money!
+
+  """
+   promo code adjustments
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  adjustments: [Adjustments!]
+
+  """
+   taxes
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  taxes: [Tax!]
+
+  """
+  fulfillmentId
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  fulfillmentId: ID
+}
+
+"""
+ConferenceRoomItem
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type ConferenceRoomItem implements Orderable {
+  """
+  startTime
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  startTime: String!
+
+  """
+  endTime
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  endTime: String!
+
+  """
+  quantity
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  quantity: Int!
+
+  """
+  subTotal
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  subTotal: Money!
+
+  """
+  grandTotal
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  grandTotal: Money!
+
+  """
+   promo code adjustments
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  adjustments: [Adjustments!]
+
+  """
+   taxes
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  taxes: [Tax!]
+
+  """
+  fulfillmentId
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  fulfillmentId: ID
+
+  """
+  The conference room for the quote
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  conferenceRoom: ConferenceRoom!
+}
+
+"""
+Represents a reservation on a bookable resource.
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+type CreatedOrder {
+  """
+  order id
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  id: ID!
+
+  """
+  the status of the order
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  status: OrderStatus!
+}
+
+"""
+Place order result
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+type PlaceOrderResult implements MutationResult {
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  isSuccess: Boolean!
+
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errors: [MutationError!]
+
+  """
+  The order created
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  result: CreatedOrder
+}
+
+"""
+GetPrivateOfficesResponse
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+type GetPrivateOfficesResponse {
+  """
+  The private offices resulting from the query
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  offices: [PrivateOffice!]!
+
+  """
+  Total number of results that can be returned
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  totalCount: Int!
+}
+
+"""
+A pared-down representation of an account, without any privileged data included
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+type AccountBasic {
+  """
+  ID of the account
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  id: ID!
+
+  """
+  Name of the account
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  name: String!
+}
+
+"""
+Represents the payment for a booking
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+type CreditOrder {
+  """
+  Number of credits charged
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  price: String!
+
+  """
+  A pared-down representation of the account to which the order was charged, without any privileged data included
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  chargedTo: AccountBasic!
+}
+
+"""
+OrderablePrice
+GraphMeta: {
+ "release": "10.0.0"
+}
+"""
+type OrderablePrice {
+  """
+  Price id
   GraphMeta: {
    "release": "10.0.0"
   }
   """
-  accountId: ID!
+  id: ID!
+
+  """
+  Product id
+  GraphMeta: {
+   "release": "10.0.0"
+  }
+  """
+  productId: ID!
+
+  """
+  Money amount for the orderable
+  GraphMeta: {
+   "release": "10.0.0"
+  }
+  """
+  price: Money!
+
+  """
+  Time unit for the money amount of the price.
+  GraphMeta: {
+   "release": "10.0.0"
+  }
+  """
+  rateUnit: TimeUnit!
+}
+
+"""Enum representing the type of a reservable."""
+enum TimeUnit {
+  MINUTE
+  HOUR
+  DAY
+  VARIABLE
+}
+
+"""
+Represents a reservation on a bookable resource.
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type CreatedQuote {
+  """
+  quote uuid
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  id: ID!
+
+  """
+  quote status
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  status: QuoteStatus!
+}
+
+"""Quote statuses"""
+enum QuoteStatus {
+  INITIALIZED
+  READY
+  ACCEPTED
+  DECLINED
+  INVALIDATED
+  EXPIRED
+}
+
+"""
+Represents a quote for a reservation on a bookable resource.
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type ReadyQuote {
+  """
+  quote id
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  id: ID!
+
+  """
+  quote status
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  status: QuoteStatus!
+
+  """
+  quote status details
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  statusDetails: [OrderStatusDetail!]!
+
+  """
+  quote expiry
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  expiry: String!
+
+  """
+  quote line items
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  lineItems: [OrderableUnion!]!
+
+  """
+  quote grand total that includes taxes
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  grandTotal: Money!
+
+  """
+  quote subtotal that excludes taxes
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  subTotal: Money!
+
+  """
+  promo code adjustments
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  adjustments: [Adjustments!]!
+
+  """
+  taxes
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  taxes: [Tax!]!
+}
+
+"""
+Create booking result
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+type RequestQuoteResult implements MutationResult {
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  isSuccess: Boolean!
+
+  """
+  Represents if this mutation was executed successfully or not
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  errors: [MutationError!]
+
+  """
+  The quote created by requesting a booking
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  result: CreatedQuote
+}
+
+"""
+Number of available and total seats for a given date
+GraphMeta: {
+ "release": "1.7.0"
+}
+"""
+type SharedWorkspaceSeats {
+  """
+  Total number of seats for the shared workspace
+  GraphMeta: {
+   "release": "1.7.0"
+  }
+  """
+  total: Int!
+
+  """
+  Available number of seats for the shared workspace for the passed-in date
+  GraphMeta: {
+   "release": "1.7.0"
+  }
+  """
+  available: Int!
+}
+
+"""
+GetPrivateAccessAreasResponse
+GraphMeta: {
+ "release": "1.5.0"
+}
+"""
+type GetPrivateAccessAreasResponse {
+  """
+  The private access areas resulting from the query
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  offices: [PrivateAccessArea!]!
+
+  """
+  Total number of results that can be returned
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  totalCount: Int!
 }
 
 type Query {
@@ -2941,30 +2460,70 @@ type Query {
 }
 
 """
-Quote line item input
+Wrapper for getGlobalAvailableInventory query
+GraphMeta: {
+ "release": "10.0.0"
+}
+"""
+input GetGlobalAvailableInventoryInput {
+  """
+  timeRange
+  GraphMeta: {
+   "release": "10.0.0"
+  }
+  """
+  timeRange: BookingTimeRange!
+
+  """
+  locationIds
+  GraphMeta: {
+   "release": "10.0.0"
+  }
+  """
+  locationIds: [ID!]!
+}
+
+"""
+Input for specifying a time range for querying bookings
+GraphMeta: {
+ "release": "1.5.1"
+}
+"""
+input BookingTimeRange {
+  """
+  RFC3339 formatted datestring representing the start of the time range.
+  GraphMeta: {
+   "release": "1.5.1"
+  }
+  """
+  startTime: String!
+
+  """
+  RFC3339 formatted datestring representing the end of the time range.
+  GraphMeta: {
+   "release": "1.5.1"
+  }
+  """
+  endTime: String!
+}
+
+"""
+Input for MyBookingCreditUsage query
 GraphMeta: {
  "release": "1.0.0"
 }
 """
-input QuoteLineItem {
+input GetMyBookingCreditUsageInput {
   """
-   rooms or workspace uuid
+  Account ID of the user (generally is the same as company ID)
   GraphMeta: {
    "release": "1.0.0"
   }
   """
-  inventoryId: ID!
+  accountId: ID!
 
   """
-   item type
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  lineItemType: LineItemEnum!
-
-  """
-   start time
+  An RFC3339 formatted date string used to scope credit spend.
   GraphMeta: {
    "release": "1.0.0"
   }
@@ -2972,228 +2531,68 @@ input QuoteLineItem {
   startTime: String!
 
   """
-   end time
+  An RFC3339 formatted date string used to scope credit spend.
   GraphMeta: {
    "release": "1.0.0"
   }
   """
   endTime: String!
-
-  """
-   quantity
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  quantity: Int!
-
-  """
-   promo code
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  promoCode: String
-}
-
-"""Quote statuses"""
-enum QuoteStatus {
-  INITIALIZED
-  READY
-  ACCEPTED
-  DECLINED
-  INVALIDATED
-  EXPIRED
 }
 
 """
-Represents a quote for a reservation on a bookable resource.
+UpcomingBookingsInput
 GraphMeta: {
- "release": "1.0.0"
+ "release": "1.1.0"
 }
 """
-type ReadyQuote {
+input GetUpcomingBookingsInput {
   """
-  quote id
+  Filter bookings by owner
   GraphMeta: {
-   "release": "1.0.0"
+   "release": "1.1.0"
   }
   """
-  id: ID!
+  ownerId: ID!
 
   """
-  quote status
+  RFC3339 formatted datestring. If provided, query will filter bookings that finish after this date
   GraphMeta: {
-   "release": "1.0.0"
+   "release": "1.1.0"
   }
   """
-  status: QuoteStatus!
+  finishingAfterTime: String!
 
   """
-  quote status details
+  The type of reservable this reservation was created for
   GraphMeta: {
-   "release": "1.0.0"
+   "release": "1.1.0"
   }
   """
-  statusDetails: [OrderStatusDetail!]!
+  reservableType: ReservableType
 
   """
-  quote expiry
+  The user membership uuid the booking was made under
   GraphMeta: {
-   "release": "1.0.0"
+   "release": "1.1.0"
   }
   """
-  expiry: String!
+  userMembershipId: ID
 
   """
-  quote line items
+  pagination input
   GraphMeta: {
-   "release": "1.0.0"
+   "release": "1.1.0"
   }
   """
-  lineItems: [OrderableUnion!]!
+  pagination: PaginationInput!
 
   """
-  quote grand total that includes taxes
+  sort order input
   GraphMeta: {
-   "release": "1.0.0"
+   "release": "1.1.0"
   }
   """
-  grandTotal: Money!
-
-  """
-  quote subtotal that excludes taxes
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  subTotal: Money!
-
-  """
-  promo code adjustments
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  adjustments: [Adjustments!]!
-
-  """
-  taxes
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  taxes: [Tax!]!
-}
-
-"""
-Create booking result
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-type RequestQuoteResult implements MutationResult {
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  isSuccess: Boolean!
-
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  errors: [MutationError!]
-
-  """
-  The quote created by requesting a booking
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  result: CreatedQuote
-}
-
-"""An interface for a reservable resource"""
-interface Reservable {
-  """
-  The uuid of the reservable
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  id: ID!
-
-  """
-  The total capacity of the reservable
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  capacity: Int!
-
-  """
-  The location of this reservable
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  location: Location!
-
-  """
-  Product Price
-  GraphMeta: {
-   "release": "10.0.0"
-  }
-  """
-  productPrice(
-    """ProductPriceInput"""
-    input: ProductPriceInput!
-  ): OrderablePrice!
-}
-
-"""
-Metadata about conference rooms within a location
-GraphMeta: {
- "release": "1.5.0"
-}
-"""
-type ReservableMetadata {
-  """
-  The local policy for cancelling a booked desk. Text is translated based on the member's locale
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  dailyDeskCancellationPolicy: String
-
-  """
-  The local policy for cancelling a conference room. Text is translated based on the member's locale
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  conferenceRoomCancellationPolicy: String
-
-  """
-  A count of conference rooms in a location
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  conferenceRoomCount: Float @deprecated(reason: "To be replaced with a dedicated query")
-
-  """
-  A count of bookable spaces in a location (e.g. desks)
-  GraphMeta: {
-   "release": "1.5.0"
-  }
-  """
-  bookableSpaceCount: Float @deprecated(reason: "To be replaced with dedicated queries")
+  sortOrder: [BookingSortOrder!]!
 }
 
 """Enum representing the type of a reservable."""
@@ -3206,38 +2605,158 @@ enum ReservableType {
   PRIVATE_ACCESS_AREA
 }
 
-union ReservableUnion = ConferenceRoom | SharedWorkspace | PrivateOffice | PrivateAccessArea
+"""
+Common pagination input type
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+input PaginationInput {
+  """
+  Number of elements to skip over when determining the start of a page.
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  offset: Int
+
+  """
+  Number of elements in a page
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  limit: Int
+}
+
+"""Sort order parameters for conference rooms."""
+enum BookingSortOrder {
+  START
+  START_DESC
+  FINISH
+  FINISH_DESC
+  RESERVABLE_TYPE
+  RESERVABLE_TYPE_DESC
+}
 
 """
-Represents a reservation schedule on a bookable resource
+PastBookingsInput
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+input GetPastBookingsInput {
+  """
+  Filter bookings by owner
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  ownerId: ID!
+
+  """
+  The type of reservable this reservation was created for
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  reservableType: ReservableType
+
+  """
+  The user membership uuid the booking was made under
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  userMembershipId: ID
+
+  """
+  RFC3339 formatted datestring representing the beginning of the search range.
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  finishingBeforeTime: String!
+
+  """
+  pagination input
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  pagination: PaginationInput!
+
+  """
+  sort order input
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  sortOrder: [BookingSortOrder!]!
+}
+
+"""
+Input for querying reservation schedule by ID and time range
 GraphMeta: {
  "release": "1.5.0"
 }
 """
-type ReservationSchedule {
+input GetReservationScheduleInput {
   """
-  RFC3339 formatted datestring representing the start time of the reservation
+  ID of the reservable resource
   GraphMeta: {
    "release": "1.5.0"
   }
   """
-  startTime: String!
+  reservableId: ID!
 
   """
-  RFC3339 formatted datestring representing the end time of the reservation
+  The type of reservable
   GraphMeta: {
    "release": "1.5.0"
   }
   """
-  endTime: String!
+  type: ReservableType!
 
   """
-  True if the bearer token used to make this request matches the user this booking was made for
+  Only show reservations within this range
   GraphMeta: {
    "release": "1.5.0"
   }
   """
-  isCurrentUsersBooking: Boolean!
+  timeRange: BookingTimeRange!
+}
+
+"""
+Wrapper for getAvailableInventory query
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+input GetConferenceRoomsInput {
+  """
+  roomsFilter input
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  filter: RoomsFilterInput!
+
+  """
+  pagination input
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  pagination: PaginationInput!
+
+  """
+  sort order input
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  sortOrder: [RoomSortOrder!]!
 }
 
 """
@@ -3320,6 +2839,86 @@ input RoomsFilterInput {
   userMembershipId: ID
 }
 
+"""
+TimeFilterInput
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+input TimeFilterInput {
+  """
+  When an additional filter starts, only permitted with min_availability and window_end_time filters. Try to use only on half-hour blocks. Use ISO formatted DateTimes and IANA timezones to prevent surprises.
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  startTime: String!
+
+  """
+  When an additional filter starts, only permitted with min_availability and window_start_time filters. Try to use only on half-hour blocks. Use ISO formatted DateTimes and IANA timezones to prevent surprises.
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  endTime: String
+
+  """
+  Minimum interval in minutes that the room must be available for. Add window_start_time and window_end_time parameters to get rooms available for at least 60 minutes within the window between window_start_time and window_end_time. Only permitted with window_start_time and window_end_time filters.
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  duration: Int!
+}
+
+"""
+NearbyFilterInput
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+input NearbyFilterInput {
+  """
+  Latitude, longitude coordinates (in that order, separated by a comma) for filtering nearby rooms around this point.
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  center: Coordinate!
+
+  """
+  Filter's spaces based on a radius. Unit is in km.
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  radius: Int!
+}
+
+"""
+Lat-Long coordinate pair
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+input Coordinate {
+  """
+  latitude
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  latitude: String!
+
+  """
+  longitude
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  longitude: String!
+}
+
 """Sort order parameters for conference rooms."""
 enum RoomSortOrder {
   FLOOR_NUMBER
@@ -3328,160 +2927,186 @@ enum RoomSortOrder {
 }
 
 """
-Reservable Schedule
+GetPrivateOfficesInput
 GraphMeta: {
  "release": "1.1.0"
 }
 """
-type Schedule {
+input GetPrivateOfficesInput {
   """
-  day of the week
+  filter for result set
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  day: String!
+  filter: PrivateOfficeFilterInput!
 
   """
-  opening time
+  pagination input
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  openTime: String!
+  pagination: PaginationInput!
 
   """
-  closing time
+  sort order input
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  closeTime: String!
+  sortOrder: [PrivateOfficeSortOrder!]
 }
 
 """
-A shared workspace area
+Filter parameters for querying private office.
 GraphMeta: {
  "release": "1.1.0"
 }
 """
-type SharedWorkspace implements Reservable {
+input PrivateOfficeFilterInput {
   """
-  id
+  Specify the date on which to search
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  id: ID!
+  accessibleOn: String!
 
   """
-  The total capacity of this shared workspace
+  Narrow results to private office matching the given uuids.
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  capacity: Int!
+  ids: [String!]
 
   """
-  The location of this shared workspace
+  Narrow results to private office in buildings with the given locationUUIDs.
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  location: Location!
+  locationIds: [String!]
 
   """
-  Product Price
-  GraphMeta: {
-   "release": "10.0.0"
-  }
-  """
-  productPrice(
-    """ProductPriceInput"""
-    input: ProductPriceInput!
-  ): OrderablePrice!
-
-  """
-  Image URL
+  Narrow results to private office with a capacity greater than this value.
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  imageUrl: String!
+  capacityGTE: Int
 
   """
-  Header Image URL
+  Filter out shared workspaces that do not have availability within the search range
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  headerImageUrl: String!
+  availableBetween: AvailabilityFilterInput
 
   """
-  The number of credits required to book this shared workspace
+  Narrow results to private office in a particular geolocation. If using this parameter, omit locationUUIDs.
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  credits: Int!
+  nearbyFilter: PrivateOfficeNearbyFilter
 
   """
-  The open time for this shared workspace in the format HH:mm
+  Filter out private office by the membership type of the user membership uuid
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  openTime: String!
+  userMembershipId: String
+}
 
+"""
+Filter out shared workspaces that do not have available capacity within the search range
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+input AvailabilityFilterInput {
   """
-  The close time for this shared workspace in the format HH:mm
+  RFC3339 formated datestring representing the start of the availability search range
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  closeTime: String!
+  startTime: String!
 
   """
-  The cancellation policy
+  RFC3339 formatted datestring representing the end of the availability search range
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  cancellationPolicy: String!
+  endTime: String!
+}
 
+"""
+Input for querying private office by location.
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+input PrivateOfficeNearbyFilter {
   """
-  Operating Hours
+  The center of the search.
   GraphMeta: {
    "release": "1.1.0"
   }
   """
-  operatingHours: [Schedule!]!
+  center: Coordinate!
 
   """
-  The number of shared workspace seats available at this location
+  The radius of the search area in kilometers.
   GraphMeta: {
-   "release": "1.4.0"
+   "release": "1.1.0"
   }
   """
-  seatsAvailable(
-    """
-    The datetime for which you want to inquire how many seats are available. Use ISO formatted DateTimes and IANA timezones to prevent surprises.
-    """
-    date: String!
-  ): Int! @deprecated(reason: "Replaced with 'seats' in release 1.7.0")
+  radius: Int!
+}
+
+"""Sort order parameters for private offices."""
+enum PrivateOfficeSortOrder {
+  FLOOR_NUMBER
+  NAME
+  DISTANCE
+}
+
+"""
+SharedWorkspacesInput
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+input GetSharedWorkspacesInput {
+  """
+  filter for result set
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  filter: SharedWorkspaceFilterInput!
 
   """
-  Number of available and total seats for a given date
+  pagination input
   GraphMeta: {
-   "release": "1.7.0"
+   "release": "1.1.0"
   }
   """
-  seats(
-    """
-    Date for which to get seat availability, represented as an RFC 3339 date string (e.g., '2022-06-01')
-    """
-    date: String!
-  ): SharedWorkspaceSeats!
+  pagination: PaginationInput!
+
+  """
+  sort order input
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  sortOrder: [SharedWorkspaceSortOrder!]
 }
 
 """
@@ -3532,110 +3157,6 @@ input SharedWorkspaceFilterInput {
   userMembershipId: ID
 }
 
-"""
-SharedWorkspaceItem
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-type SharedWorkspaceItem implements Orderable {
-  """
-  startTime
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  startTime: String!
-
-  """
-  endTime
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  endTime: String!
-
-  """
-  quantity
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  quantity: Int!
-
-  """
-  subTotal
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  subTotal: Money!
-
-  """
-  grandTotal
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  grandTotal: Money!
-
-  """
-   promo code adjustments
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  adjustments: [Adjustments!]
-
-  """
-   taxes
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  taxes: [Tax!]
-
-  """
-  fulfillmentId
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  fulfillmentId: ID
-
-  """
-  The shared workspace for the quote
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  sharedWorkspace: SharedWorkspace!
-}
-
-"""
-Number of available and total seats for a given date
-GraphMeta: {
- "release": "1.7.0"
-}
-"""
-type SharedWorkspaceSeats {
-  """
-  Total number of seats for the shared workspace
-  GraphMeta: {
-   "release": "1.7.0"
-  }
-  """
-  total: Int!
-
-  """
-  Available number of seats for the shared workspace for the passed-in date
-  GraphMeta: {
-   "release": "1.7.0"
-  }
-  """
-  available: Int!
-}
-
 """Sort order parameters for shared workspaces."""
 enum SharedWorkspaceSortOrder {
   LOCATION_NAME
@@ -3646,171 +3167,348 @@ enum SharedWorkspaceSortOrder {
 }
 
 """
-Tax details
+GetPrivateAccessAreasInput
 GraphMeta: {
- "release": "1.0.0"
+ "release": "1.5.0"
 }
 """
-type Tax {
+input GetPrivateAccessAreasInput {
   """
-  tax uuid
+  filter for result set
   GraphMeta: {
-   "release": "1.0.0"
+   "release": "1.5.0"
+  }
+  """
+  filter: PrivateAccessAreaFilterInput!
+
+  """
+  pagination input
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  pagination: PaginationInput!
+
+  """
+  sort order input
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  sortOrder: [PrivateAccessAreaSortOrder!]
+}
+
+"""
+Filter parameters for querying private access areas
+GraphMeta: {
+ "release": "1.5.0"
+}
+"""
+input PrivateAccessAreaFilterInput {
+  """
+  Specify the date on which to search
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  accessibleOn: String!
+
+  """
+  Narrow results to private access areas matching the given UUIDs
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  ids: [String!]
+
+  """
+  Narrow results to private access areas in buildings with the given location UUIDs
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  locationIds: [String!]
+
+  """
+  Narrow results to private access areas with a capacity greater than or equal to this value
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  capacityGTE: Int
+
+  """
+  Filter out private access areas that do not have availability within the search range
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  availableBetween: AvailabilityFilterInput
+
+  """
+  Narrow results to private access areas in a particular geolocation. If using this parameter, omit location UUIDs
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  nearbyFilter: PrivateAccessAreaNearbyFilter
+
+  """
+  Filter out private access areas by the membership type of the user membership UUID
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  userMembershipId: String
+}
+
+"""
+Input for querying private access areas by location
+GraphMeta: {
+ "release": "1.5.0"
+}
+"""
+input PrivateAccessAreaNearbyFilter {
+  """
+  The center of the search.
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  center: Coordinate!
+
+  """
+  The radius of the search area in kilometers.
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  radius: Int!
+}
+
+"""Sort order parameters for private access areas"""
+enum PrivateAccessAreaSortOrder {
+  FLOOR_NUMBER
+  NAME
+  DISTANCE
+}
+
+"""
+Accepted filter options for searching locations by room/space info
+GraphMeta: {
+ "release": "1.5.0"
+}
+"""
+input GetLocationsByReservableFilterInput {
+  """
+  The type of reservable space to base other filter criteria on. Defaults to conference rooms
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  reservableType: ReservableType
+
+  """
+  Only return a subset of locations within this list
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  locationIds: [ID!]
+
+  """
+  The date/time at which spaces at the location should be accessible. RFC3339 formatted date string
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  accessibleOn: String
+
+  """
+  The minimum capacity of at least one space at the location; capacity in at least one space should be greater than or equal to this number
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  capacityMinimum: Float
+
+  """
+  The amenity tags that should match at least one space at the location. The tags match using an OR logic
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  amenities: [String!]
+
+  """
+  The time that at least one space should be available in the location
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  timeAvailable: TimeFilterInput
+
+  """
+  Point in geospatial coordinates which the location must be near
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  nearby: NearbyFilterInput
+
+  """
+  Ensures that at least one reservable space at the location is bookable by the given membership type
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  userMembershipId: String
+
+  """
+  Pagination info. Defaults to 0 offset and 50 limit.
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  pagination: PaginationInput
+}
+
+type Mutation {
+  """
+  TODO
+  GraphMeta: {
+   "release": "10.0.0",
+   "acceptedTokenTypes": "member"
+  }
+  """
+  doEditInventoryPermissions(
+    """TODO"""
+    doEditInventoryPermissionsInput: DoEditInventoryPermissionsInput!
+  ): EditInventoryPermissionsResult!
+
+  """
+  TODO
+  GraphMeta: {
+   "release": "10.0.0",
+   "acceptedTokenTypes": "member"
+  }
+  """
+  doEditSchedule(
+    """TODO"""
+    doEditScheduleInput: DoEditScheduleInput!
+  ): EditScheduleResult!
+
+  """
+  Creates a booking
+  GraphMeta: {
+   "release": "1.4.0",
+   "acceptedTokenTypes": "member"
+  }
+  """
+  doCreateBooking(
+    """Create a new booking"""
+    doCreateBookingInput: DoCreateBookingInput!
+  ): CreateBookingResult!
+
+  """
+  Cancels the booking
+  GraphMeta: {
+   "release": "1.4.0",
+   "acceptedTokenTypes": "member"
+  }
+  """
+  doCancelBooking(
+    """Cancel a booking"""
+    doCancelBookingInput: DoCancelBookingInput!
+  ): CancelBookingResult!
+
+  """
+  Updates the booking with new notes, start time, and/or end time
+  GraphMeta: {
+   "release": "1.4.0",
+   "acceptedTokenTypes": "member"
+  }
+  """
+  doUpdateBooking(
+    """Update a booking"""
+    doUpdateBookingInput: DoUpdateBookingInput!
+  ): UpdateBookingResult!
+
+  """
+  Place a new order
+  GraphMeta: {
+   "release": "1.1.0",
+   "acceptedTokenTypes": "member"
+  }
+  """
+  doPlaceOrder(
+    """Place order input"""
+    doPlaceOrderInput: DoPlaceOrderInput!
+  ): PlaceOrderResult!
+
+  """
+  Cancel an existing fulfillment
+  GraphMeta: {
+   "release": "1.5.0",
+   "acceptedTokenTypes": "member"
+  }
+  """
+  doCancelFulfillment(
+    """Cancel fulfillment input"""
+    input: DoCancelFulfillmentInput!
+  ): CancelFulfillmentResult!
+
+  """
+  Request a quote
+  GraphMeta: {
+   "release": "1.0.0",
+   "acceptedTokenTypes": "member"
+  }
+  """
+  doRequestQuote(
+    """Do request quote input"""
+    doRequestQuoteInput: DoRequestQuoteInput!
+  ): RequestQuoteResult!
+}
+
+"""
+Input for EditInventoryPermissions mutation
+GraphMeta: {
+ "release": "10.0.0"
+}
+"""
+input DoEditInventoryPermissionsInput {
+  """
+  The uuid of the reservable
+  GraphMeta: {
+   "release": "10.0.0"
+  }
+  """
+  id: ID!
+}
+
+"""
+TODO
+GraphMeta: {
+ "release": "10.0.0"
+}
+"""
+input DoEditScheduleInput {
+  """
+  The uuid of the reservable
+  GraphMeta: {
+   "release": "10.0.0"
   }
   """
   id: ID!
 
   """
-  tax amount
+  The weekly schedule to change to
   GraphMeta: {
-   "release": "1.0.0"
+   "release": "10.0.0"
   }
   """
-  amount: Float!
-
-  """
-  currency code
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  currency: String!
-
-  """
-  tax description(e.g."3.5%")
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  description: String!
-
-  """
-  tax name(e.g.   "VAT")
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  name: String!
-}
-
-"""
-TimeFilterInput
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-input TimeFilterInput {
-  """
-  When an additional filter starts, only permitted with min_availability and window_end_time filters. Try to use only on half-hour blocks. Use ISO formatted DateTimes and IANA timezones to prevent surprises.
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  startTime: String!
-
-  """
-  When an additional filter starts, only permitted with min_availability and window_start_time filters. Try to use only on half-hour blocks. Use ISO formatted DateTimes and IANA timezones to prevent surprises.
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  endTime: String
-
-  """
-  Minimum interval in minutes that the room must be available for. Add window_start_time and window_end_time parameters to get rooms available for at least 60 minutes within the window between window_start_time and window_end_time. Only permitted with window_start_time and window_end_time filters.
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  duration: Int!
-}
-
-"""Enum representing the type of a reservable."""
-enum TimeUnit {
-  MINUTE
-  HOUR
-  DAY
-  VARIABLE
-}
-
-"""
-Update booking result
-GraphMeta: {
- "release": "1.4.0"
-}
-"""
-type UpdateBookingResult implements MutationResult {
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  isSuccess: Boolean!
-
-  """
-  Represents if this mutation was executed successfully or not
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  errors: [MutationError!]
-
-  """
-  The booking as updated
-  GraphMeta: {
-   "release": "1.4.0"
-  }
-  """
-  result: Booking
-}
-
-"""
-Represents the federated user entity
-GraphMeta: {
- "release": "1.0.0"
-}
-"""
-type User @extends @key(fields: "id") {
-  """
-  ID for this user
-  GraphMeta: {
-   "release": "1.0.0"
-  }
-  """
-  id: ID! @external
-}
-
-"""
-UserActionDetail
-GraphMeta: {
- "release": "1.1.0"
-}
-"""
-type UserActionDetail {
-  """
-  action identifier
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  actionIdentifier: String!
-
-  """
-  redirect url
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  redirectUrl: String!
-
-  """
-  stripe payment intent client secret
-  GraphMeta: {
-   "release": "1.1.0"
-  }
-  """
-  stripePaymentIntentSecret: String!
+  weeklySchedule: [WeeklySchedule!]!
 }
 
 """
@@ -3843,4 +3541,306 @@ input WeeklySchedule {
   }
   """
   close: String!
+}
+
+"""
+Wrapper for the doCreateBooking mutation
+GraphMeta: {
+ "release": "1.4.0"
+}
+"""
+input DoCreateBookingInput {
+  """
+  The UUID of the reservable resource
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  reservableId: ID!
+
+  """
+  The type of reservable
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  type: ReservableType!
+
+  """
+  The UUID of the account this booking should be charged to
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  chargedToAccountId: ID!
+
+  """
+  RFC3339 formatted datestring representing the start of the booking period
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  startTime: String!
+
+  """
+  RFC3339 formatted datestring representing the end of the booking period
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  endTime: String!
+}
+
+"""
+Wrapper for the doCancelBooking mutation
+GraphMeta: {
+ "release": "1.4.0"
+}
+"""
+input DoCancelBookingInput {
+  """
+  The UUID of the booking resource
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  id: ID!
+
+  """
+  The number of credits to refund
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  credits: Int
+
+  """
+  Notes to add to the cancellation
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  notes: String
+
+  """
+  The reservation cancellation reason to association this cancellation with
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  reasonId: String
+}
+
+"""
+Wrapper for the doUpdateBooking mutation
+GraphMeta: {
+ "release": "1.4.0"
+}
+"""
+input DoUpdateBookingInput {
+  """
+  The UUID of the reservation
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  id: ID!
+
+  """
+  RFC3339 formatted datestring representing the start of the booking period
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  startTime: String
+
+  """
+  RFC3339 formatted datestring representing the end of the booking period
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  endTime: String
+
+  """
+  Additional notes to add to the booking
+  GraphMeta: {
+   "release": "1.4.0"
+  }
+  """
+  notes: String
+}
+
+"""
+Place Order Input params
+GraphMeta: {
+ "release": "1.1.0"
+}
+"""
+input DoPlaceOrderInput {
+  """
+  The order placer's account - generally the company a member belongs to
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  accountId: ID
+
+  """
+  The payment method - eg corresponding to a credit card on file, etc
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  paymentProfileId: ID
+
+  """
+  The quote to base this order on. Quote must have status of READY to successfully place an order
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  quoteId: ID
+
+  """
+  The person making the order. Usually the same as the user, but not always
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  requesterId: ID
+
+  """
+  The user who will be receiving or using the ordered products
+  GraphMeta: {
+   "release": "1.1.0"
+  }
+  """
+  userId: ID
+}
+
+"""
+Cancel fulfillment input params
+GraphMeta: {
+ "release": "1.5.0"
+}
+"""
+input DoCancelFulfillmentInput {
+  """
+  Fulfillment ID to cancel
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  fulfillmentId: String!
+
+  """
+  User ID who is cancelling this fulfillment
+  GraphMeta: {
+   "release": "1.5.0"
+  }
+  """
+  requesterId: String!
+}
+
+"""
+request quote input
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+input DoRequestQuoteInput {
+  """
+  currency code
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  currency: String!
+
+  """
+  items being ordered
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  lineItems: [QuoteLineItem!]!
+
+  """
+   The userId that the quote is being made for
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  userId: ID!
+
+  """
+   The user membership uuid of the user in which the quote is being made for
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  userMembershipId: ID
+}
+
+"""
+Quote line item input
+GraphMeta: {
+ "release": "1.0.0"
+}
+"""
+input QuoteLineItem {
+  """
+   rooms or workspace uuid
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  inventoryId: ID!
+
+  """
+   item type
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  lineItemType: LineItemEnum!
+
+  """
+   start time
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  startTime: String!
+
+  """
+   end time
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  endTime: String!
+
+  """
+   quantity
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  quantity: Int!
+
+  """
+   promo code
+  GraphMeta: {
+   "release": "1.0.0"
+  }
+  """
+  promoCode: String
+}
+
+"""Line item types"""
+enum LineItemEnum {
+  SHARED_WORKSPACE
+  CONFERENCE_ROOM
 }
